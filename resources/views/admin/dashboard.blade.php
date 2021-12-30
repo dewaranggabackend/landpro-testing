@@ -22,8 +22,7 @@ Dashboard
 <div class="row">
 <div class="col-xl-3 col-md-6">
                                 <div class="card bg-primary text-white mb-4">
-                                    <div class="card-body"> <i class="fa fa-user"></i> &nbsp;<?php $user_on = count($user); $user_off = count($banned_user);
-                                                                                                    $total_user = $user_on; echo "$total_user"; ?> Pengguna Terdaftar</div>
+                                    <div class="card-body"> <i class="fa fa-user"></i> &nbsp;<?php "$user"; ?> Pengguna Terdaftar</div>
                                     
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                         <a class="small text-white stretched-link" href="/users">Lihat</a>
@@ -33,7 +32,7 @@ Dashboard
                             </div>
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-danger text-white mb-4">
-                                    <div class="card-body"> <i class="fa fa-user"></i> &nbsp;{{count($banned_user)}} Akun Dibanned</div>
+                                    <div class="card-body"> <i class="fa fa-user"></i> &nbsp;{{$banned_user}} Akun Dibanned</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                         <a class="small text-white stretched-link" href="/users/banned">Lihat</a>
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -42,7 +41,7 @@ Dashboard
                             </div>
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-success text-white mb-4">
-                                    <div class="card-body"> <i class="fa fa-house-user"></i> &nbsp;{{count($properti)}} Properti Aktif</div>
+                                    <div class="card-body"> <i class="fa fa-house-user"></i> &nbsp;{{$properti}} Properti Aktif</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                         <a class="small text-white stretched-link" href="/properti">Lihat</a>
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -51,7 +50,7 @@ Dashboard
                             </div>
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-danger text-white mb-4">
-                                    <div class="card-body"> <i class="fa fa-house-user"></i> &nbsp;{{count($off_properti)}} Properti Nonaktif</div>
+                                    <div class="card-body"> <i class="fa fa-house-user"></i> &nbsp;{{$off_properti}} Properti Nonaktif</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                         <a class="small text-white stretched-link" href="/properti/nonaktif">Lihat</a>
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -122,7 +121,7 @@ var myPieChart = new Chart(ctx, {
   data: {
     labels: ["Rumah", "Resedensial", "Tanah", "Kantor", "Ruang Usaha", "Apartemen", "Ruko"],
     datasets: [{
-    data: [{{count($properti_rumah)}}, {{count($properti_resedensial)}},{{count($properti_tanah)}}, {{count($properti_kantor)}}, {{count($properti_ruang)}}, {{count($properti_apartemen)}}, {{count($properti_ruko)}}],
+    data: [{{$properti_rumah}}, {{$properti_resedensial}},{{$properti_tanah}}, {{$properti_kantor}}, {{$properti_ruang}}, {{$properti_apartemen}}, {{$properti_ruko}}],
       backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745', '#323232', '#bf00ff', '#FFC0CB'],
     }],
   },
@@ -142,7 +141,7 @@ var myLineChart = new Chart(ctx, {
       label: "Total",
       backgroundColor: "rgba(2,117,216,1)",
       borderColor: "rgba(2,117,216,1)",
-      data: [{{count($agen)}}, {{count($pencari)}}],
+      data: [{{$agen)}}, {{$pencari)}}],
     }],
   },
   options: {
@@ -197,7 +196,7 @@ var myLineChart = new Chart(ctx, {
       pointHoverBackgroundColor: "rgba(2,117,216,1)",
       pointHitRadius: 50,
       pointBorderWidth: 2,
-      data: [{{count($seven)}}, {{count($six)}}, {{count($five)}}, {{count($four)}}, {{count($three)}}, {{count($two)}}, {{count($one)}}],
+      data: [{{$seven}}, {{$six}}, {{$five}}, {{$four}}, {{$three}}, {{$two}}, {{$one}}],
     }],
   },
   options: {

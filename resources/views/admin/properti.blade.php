@@ -1,7 +1,7 @@
 @extends('layout.master')
 
 @section('judul')
-Properti
+Properti Aktif
 @endsection
 
 @section('mainjudul')

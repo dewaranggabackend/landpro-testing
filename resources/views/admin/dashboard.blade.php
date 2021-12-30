@@ -32,7 +32,7 @@ Dashboard
                             </div>
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-danger text-white mb-4">
-                                    <div class="card-body"> <i class="fa fa-user"></i> &nbsp;{{$banned_user}} Akun Dibanned</div>
+                                    <div class="card-body"> <i class="fa fa-user"></i> &nbsp;{{$banned_user}} Akun Terbanned</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                         <a class="small text-white stretched-link" href="/users/banned">Lihat</a>
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>

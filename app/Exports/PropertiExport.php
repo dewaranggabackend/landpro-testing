@@ -22,7 +22,7 @@ class PropertiExport implements FromCollection, WithHeadings
             'interior', 'fasilitas', 'pdam', 'foto_tampak_depan', 'foto_tampak_jalan',
             'foto_tampak_ruangan', 'harga', 'cicilan', 'uang_muka', 'nego',
             'harga_uang_muka', 'longitude', 'latitude', 'whatsapp', 'kontak',
-            'tayang', 'pet_allowed', 'created_at', 'updated_at', 'deleted_at',
+            'tayang', 'pet_allowed', 'created_at', 'updated_at',
             'exp'
         ]);
     }

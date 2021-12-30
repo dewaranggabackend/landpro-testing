@@ -213,26 +213,26 @@ class adminController extends Controller
 
     public function dashboard () {
         $current = date('Y-m-d H:i:s');
-        $user = \App\Models\User::all();
-        $banned_user = \App\Models\User::onlyTrashed()->get();
+        $user = \App\Models\User::count();
+        $banned_user = \App\Models\User::onlyTrashed()->count();
         $properti = \App\Models\properti::all();
-        $properti_rumah = \App\Models\properti::where('category_id', 1)->get();
-        $properti_resedensial = \App\Models\properti::where('category_id', 2)->get();
-        $properti_tanah = \App\Models\properti::where('category_id', 3)->get();
-        $properti_kantor = \App\Models\properti::where('category_id', 4)->get();
-        $properti_ruang = \App\Models\properti::where('category_id', 5)->get();
-        $properti_apartemen = \App\Models\properti::where('category_id', 6)->get();
-        $properti_ruko = \App\Models\properti::where('category_id', 7)->get();
-        $agen = \App\Models\User::where('role', 2)->get();
-        $pencari = \App\Models\User::where('role', 3)->get();
-        $off_properti = \App\Models\properti::onlyTrashed()->get();
-        $seven = \App\Models\User::where('created_at', '<=', Carbon::now()->subDays(7)->toDateTimeString())->get();
-        $six = \App\Models\User::where('created_at', '<=', Carbon::now()->subDays(6)->toDateTimeString())->get();
-        $five = \App\Models\User::where('created_at', '<=', Carbon::now()->subDays(5)->toDateTimeString())->get();
-        $four = \App\Models\User::where('created_at', '<=', Carbon::now()->subDays(4)->toDateTimeString())->get();
-        $three = \App\Models\User::where('created_at', '<=', Carbon::now()->subDays(3)->toDateTimeString())->get();
-        $two = \App\Models\User::where('created_at', '<=', Carbon::now()->subDays(2)->toDateTimeString())->get();
-        $one = \App\Models\User::where('created_at', '<=', Carbon::now()->subDays(1)->toDateTimeString())->get();
+        $properti_rumah = \App\Models\properti::where('category_id', 1)->count();
+        $properti_resedensial = \App\Models\properti::where('category_id', 2)->count();
+        $properti_tanah = \App\Models\properti::where('category_id', 3)->count();
+        $properti_kantor = \App\Models\properti::where('category_id', 4)->count();
+        $properti_ruang = \App\Models\properti::where('category_id', 5)->count();
+        $properti_apartemen = \App\Models\properti::where('category_id', 6)->count();
+        $properti_ruko = \App\Models\properti::where('category_id', 7)->count();
+        $agen = \App\Models\User::where('role', 2)->count();
+        $pencari = \App\Models\User::where('role', 3)->count();
+        $off_properti = \App\Models\properti::onlyTrashed()->count();
+        $seven = \App\Models\User::where('created_at', '<=', Carbon::now()->subDays(7)->toDateTimeString())->count();
+        $six = \App\Models\User::where('created_at', '<=', Carbon::now()->subDays(6)->toDateTimeString())->count();
+        $five = \App\Models\User::where('created_at', '<=', Carbon::now()->subDays(5)->toDateTimeString())->count();
+        $four = \App\Models\User::where('created_at', '<=', Carbon::now()->subDays(4)->toDateTimeString())->count();
+        $three = \App\Models\User::where('created_at', '<=', Carbon::now()->subDays(3)->toDateTimeString())->count();
+        $two = \App\Models\User::where('created_at', '<=', Carbon::now()->subDays(2)->toDateTimeString())->count();
+        $one = \App\Models\User::where('created_at', '<=', Carbon::now()->subDays(1)->toDateTimeString())->count();
 
         return view ('admin.dashboard', compact('user', 'banned_user', 'properti', 'off_properti', 'properti_rumah', 
         'properti_resedensial', 'properti_tanah', 'properti_kantor', 'properti_ruang', 'properti_apartemen', 'properti_ruko',

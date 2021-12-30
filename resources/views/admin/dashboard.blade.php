@@ -23,7 +23,7 @@ Dashboard
 <div class="col-xl-3 col-md-6">
                                 <div class="card bg-primary text-white mb-4">
                                     <div class="card-body"> <i class="fa fa-user"></i> &nbsp;<?php $user_on = count($user); $user_off = count($banned_user);
-                                                                                                    $total_user = $user_on + $user_off; echo "$total_user"; ?> Pengguna Terdaftar</div>
+                                                                                                    $total_user = $user_on; echo "$total_user"; ?> Pengguna Terdaftar</div>
                                     
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                         <a class="small text-white stretched-link" href="/users">Lihat</a>

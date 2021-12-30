@@ -141,7 +141,7 @@ var myLineChart = new Chart(ctx, {
       label: "Total",
       backgroundColor: "rgba(2,117,216,1)",
       borderColor: "rgba(2,117,216,1)",
-      data: [{{$agen)}}, {{$pencari)}}],
+      data: [{{$agen}}, {{$pencari}}],
     }],
   },
   options: {

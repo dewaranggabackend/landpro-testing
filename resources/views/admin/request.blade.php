@@ -32,10 +32,10 @@ Request
                     <input class="form-control" type="text" placeholder="Cari identifier..." name="cari" aria-describedby="btnNavbarSearch" />
                     <button class="btn btn-secondary" id="btnNavbarSearch" type="submit"><i class="fas fa-search"></i></button>
                 </div>
-            </form>
+</form>
 </div>
 </div>
-            <div class="card mb-4">
+<div class="card mb-4">
 <div class="card-body">
 <div class="scroll">
 <table class="table table-bordered" id="datatablesSimple">
@@ -51,9 +51,20 @@ Request
     <tr>
         <td><?= $count = $count + 1;?></td>
         <td>{{$faqs->id}}</td>
-    <td>{{$faqs->nama->name}}</td>
+        <td><?php 
+            if (isset($faqs->nama->name)) {
+                echo $faqs->nama->name;
+            } else {
+                echo "User dihapus";
+            }
+        ?></td>
+    <!-- <td>{{$faqs->nama->name}}</td> -->
     <td>{{$faqs->created_at}}</td>
-        <td><a href="/users/{{$faqs->id}}/request/setuju" onclick="return confirm('Apakah kamu yakin?')"><button class="btn btn-success" data-toggle="tooltip" title="Setujui"><i class="fa fa-check"></i></button></a>
+        <td>
+        <?php
+        if (isset($faqs->nama->name)) { ?>
+            <a href="/users/{{$faqs->id}}/request/setuju" onclick="return confirm('Apakah kamu yakin?')"><button class="btn btn-success" data-toggle="tooltip" title="Setujui"><i class="fa fa-check"></i></button></a>
+        <?php } ?>
         <a href="/users/{{$faqs->id}}/request/tolak" onclick="return confirm('Apakah kamu yakin?')"><button class="btn btn-danger" data-toggle="tooltip" title="Tolak"><i class="fa fa-times"></i></button></a></td>
                 </tr>
     <?php endforeach; ?>

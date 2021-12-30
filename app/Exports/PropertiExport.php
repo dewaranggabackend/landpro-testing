@@ -6,7 +6,7 @@ use App\Models\properti;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class PropertiExport implements FromCollection
+class PropertiExport implements FromCollection, WithHeadings
 {
     /**
     * @return \Illuminate\Support\Collection

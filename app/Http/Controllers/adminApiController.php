@@ -24,6 +24,7 @@ class adminApiController extends Controller
                 'data' => 'maaf, kolom agen_id tidak boleh kosong'
             ], 400);
         }
+
         $data = \App\Models\agenf::where('user_id', $request->user_id)->where('agen_id', $request->agen_id);
         $data->delete();
         return response()->json([
@@ -517,10 +518,10 @@ class adminApiController extends Controller
 
         $keyword = $request->keyword;
         $properti = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 1)->where('tayang', 1)
-        ->where('kamar_tidur', $request->kamar_tidur)
-        ->where('kamar_mandi', $request->kamar_mandi)
-        ->where('luas_tanah', $request->luas_tanah)
-        ->where('luas_bangunan', $request->luas_bangunan)
+        ->where('kamar_tidur', '<', $request->kamar_tidur)
+        ->where('kamar_mandi', '<', $request->kamar_mandi)
+        ->where('luas_tanah', '<', $request->luas_tanah)
+        ->where('luas_bangunan', '<', $request->luas_bangunan)
         ->where(function ($query) use ($keyword, $request){
             $query
                     ->orWhere('harga', '>', $request->harga_minimal)
@@ -561,7 +562,7 @@ class adminApiController extends Controller
             $query
                     ->orWhere('harga', '>', $request->harga_minimal)
                     ->orWhere('harga', '<', $request->harga_maksimal);
-                })
+        })
         ->where(function ($query) use ($keyword, $request){
             $query->orWhere('nama', $keyword)
                   ->orWhere('provinsi', $keyword)
@@ -848,6 +849,7 @@ class adminApiController extends Controller
                 'data' => false
             ], 200);
         }
+
         return response()->json([
             'status' => 'sukses',
             'data' => true

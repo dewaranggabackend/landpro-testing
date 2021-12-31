@@ -25,7 +25,7 @@ Properti Dihapus
             </form>
 </div>
 </div>
-            <div class="card mb-4">
+<div class="card mb-4">
 <div class="card-body">
 <div class="scroll">
 <table class="table table-bordered" id="datatablesSimple">

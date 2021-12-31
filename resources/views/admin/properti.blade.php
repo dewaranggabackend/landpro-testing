@@ -1,11 +1,11 @@
 @extends('layout.master')
 
 @section('judul')
-Properti Aktif
+Properti
 @endsection
 
 @section('mainjudul')
-Properti
+Properti Aktif
 @endsection
 
 @section('subjudul')
@@ -58,7 +58,7 @@ Properti
         <th>Aksi</th>
     </tr>
     <?php   $count = 0; 
-                foreach ($properties as $properti) : ?>
+            foreach ($properties as $properti) : ?>
     <tr>
         <td><?= $count = $count + 1 ?></td>
         <td><img src="{{$properti->foto_tampak_depan}}" width=100px height=100px></td>

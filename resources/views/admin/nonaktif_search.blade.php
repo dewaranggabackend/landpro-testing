@@ -9,7 +9,7 @@ Properti Dihapus
 @endsection
 
 @section('subjudul')
-\ Trash \ Cari
+\ Properti Dihapus \ Cari
 @endsection
 
 @section('body')

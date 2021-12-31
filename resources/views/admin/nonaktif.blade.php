@@ -37,9 +37,9 @@ Trash
     <tr>
         <th>No</th>
         <th>TID</th>
-        <th>Thumbnail</th>
+        <th>Foto Properti</th>
         <th>Kategori</th>
-        <th>Nama</th>
+        <th>Nama Properti</th>
         <th>Lokasi</th>
         <th>User</th>
         <th>Harga</th>

@@ -44,7 +44,7 @@ Properti Aktif
 <div class="scroll">
 <table class="table table-bordered" id="datatablesSimple">
     <tr>
-        <th>#</th>
+        <th>No</th>
         <th>Thumbnail</th>
         <th>Kategori</th>
         <th>Nama</th>

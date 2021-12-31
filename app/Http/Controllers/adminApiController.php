@@ -45,6 +45,7 @@ class adminApiController extends Controller
             $user->update([
              'password' => Hash::make($request->new_password)
              ]);
+             
              return response()->json([
                 'status' => 'sukses',
                 'data' => 'Sukes! data berhasil dirubah'

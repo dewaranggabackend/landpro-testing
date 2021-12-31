@@ -31,9 +31,9 @@ Properti
 <table class="table table-bordered" id="datatablesSimple">
     <tr>
         <th>No</th>
-        <th>Thumbnail</th>
+        <th>Foto Properti</th>
         <th>Kategori</th>
-        <th>Nama</th>
+        <th>Nama Properti</th>
         <th>Lokasi</th>
         <th>User</th>
         <th>Harga</th>

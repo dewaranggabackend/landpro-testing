@@ -33,7 +33,7 @@ Pengguna Terdaftar
                     <input class="form-control" type="text" placeholder="Cari pengguna..." name="cari" aria-describedby="btnNavbarSearch" />
                     <button class="btn btn-secondary" id="btnNavbarSearch" type="submit"><i class="fas fa-search"></i></button>
                 </div>
-            </form>
+</form>
 </div>
 </div>
             <div class="card mb-4">

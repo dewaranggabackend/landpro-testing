@@ -1,11 +1,11 @@
 @extends('layout.master')
 
 @section('judul')
-Akun Terban
+Akun Terbanned
 @endsection
 
 @section('mainjudul')
-Akun Terban
+Akun Terbanned
 @endsection
 
 @section('subjudul')

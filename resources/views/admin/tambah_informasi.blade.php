@@ -38,7 +38,7 @@ Tambah Informasi
   <textarea class="form-control" id="tambah_informasi" name="isi" rows="20" required></textarea>
 </div>
 <div class="mb-3">
-  <label class="form-label">Thumbnail</label>
+  <label class="form-label">Foto Informasi</label>
   <input class="form-control" type="file" name="gambar" required>
 </div>
 <button type="submit" class="btn btn-success">Simpan</button>

@@ -31,7 +31,7 @@ Informasi
 <table class="table table-bordered" id="datatablesSimple">
     <tr>
         <th>No</th>
-        <th>Thumbnail</th>
+        <th>Foto Informasi</th>
         <th>Judul</th>
         <th>Isi</th>
         <th>Aksi</th>
@@ -45,11 +45,6 @@ Informasi
             echo substr($faqs->judul, 0, 30)."...";
         } else {
             echo "$faqs->judul";
-        } ?></td>
-        <td><?php if (strlen($faqs->isi) > 170) {
-            echo substr($faqs->isi, 0, 170)."...";
-        } else {
-            echo "$faqs->isi";
         } ?></td>
         <td>
         <a href="/informasi/{{$faqs->id}}/edit"><button class="btn btn-warning" data-toggle="tooltip" title="Edit"><i class="fa fa-edit"></i></button></a>

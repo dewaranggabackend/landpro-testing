@@ -43,7 +43,7 @@ Properti Dihapus
         <th>Lokasi</th>
         <th>User</th>
         <th>Harga</th>
-        <th>Dibuang Pada</th>
+        <th>Dihapus Pada</th>
         <th>Kontak</th>
         <th>Aksi</th>
     </tr>

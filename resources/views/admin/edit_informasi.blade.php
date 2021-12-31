@@ -40,7 +40,7 @@ Edit Informasi
   <textarea class="form-control" id="edit_informasi" name="isi" rows="20" required>{{$info->isi}}</textarea>
 </div>
 <div class="mb-3">
-  <label for="gambar" class="form-label">Thumbnail</label>
+  <label for="gambar" class="form-label">Foto Informasi</label>
   <input class="form-control" type="file" name="gambar" id="gambar" value="{{$info->gambar}}" required>
 </div>
 <button type="submit" class="btn btn-success">Simpan</button>

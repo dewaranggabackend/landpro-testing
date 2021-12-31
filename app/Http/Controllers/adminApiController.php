@@ -518,10 +518,10 @@ class adminApiController extends Controller
 
         $keyword = $request->keyword;
         $properti = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 1)->where('tayang', 1)
-        ->where('kamar_tidur', '<', $request->kamar_tidur)
-        ->where('kamar_mandi', '<', $request->kamar_mandi)
-        ->where('luas_tanah', '<', $request->luas_tanah)
-        ->where('luas_bangunan', '<', $request->luas_bangunan)
+        ->where('kamar_tidur', '<=', $request->kamar_tidur)
+        ->where('kamar_mandi', '<=', $request->kamar_mandi)
+        ->where('luas_tanah', '<=', $request->luas_tanah)
+        ->where('luas_bangunan', '<=', $request->luas_bangunan)
         ->where(function ($query) use ($keyword, $request){
             $query
                     ->orWhere('harga', '>', $request->harga_minimal)
@@ -554,10 +554,10 @@ class adminApiController extends Controller
         ->paginate(10);
         
         $properti_tanah = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 3)->where('tayang', 1)
-        ->where('kamar_tidur', $request->kamar_tidur)
-        ->where('kamar_mandi', $request->kamar_mandi)
-        ->where('luas_tanah', $request->luas_tanah)
-        ->where('luas_bangunan', $request->luas_bangunan)
+        ->where('kamar_tidur', '<=', $request->kamar_tidur)
+        ->where('kamar_mandi', '<=', $request->kamar_mandi)
+        ->where('luas_tanah', '<=', $request->luas_tanah)
+        ->where('luas_bangunan', '<=', $request->luas_bangunan)
         ->where(function ($query) use ($keyword, $request){
             $query
                     ->orWhere('harga', '>', $request->harga_minimal)
@@ -572,10 +572,10 @@ class adminApiController extends Controller
         ->paginate(10);
 
         $properti_kantor = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 4)->where('tayang', 1)
-        ->where('kamar_tidur', $request->kamar_tidur)
-        ->where('kamar_mandi', $request->kamar_mandi)
-        ->where('luas_tanah', $request->luas_tanah)
-        ->where('luas_bangunan', $request->luas_bangunan)
+        ->where('kamar_tidur', '<=', $request->kamar_tidur)
+        ->where('kamar_mandi', '<=', $request->kamar_mandi)
+        ->where('luas_tanah', '<=', $request->luas_tanah)
+        ->where('luas_bangunan', '<=', $request->luas_bangunan)
         ->where(function ($query) use ($keyword, $request){
             $query
                     ->orWhere('harga', '>', $request->harga_minimal)
@@ -590,10 +590,10 @@ class adminApiController extends Controller
         ->paginate(10);
         
         $properti_usaha = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 5)->where('tayang', 1)
-        ->where('kamar_tidur', $request->kamar_tidur)
-        ->where('kamar_mandi', $request->kamar_mandi)
-        ->where('luas_tanah', $request->luas_tanah)
-        ->where('luas_bangunan', $request->luas_bangunan)
+        ->where('kamar_tidur', '<=', $request->kamar_tidur)
+        ->where('kamar_mandi', '<=', $request->kamar_mandi)
+        ->where('luas_tanah', '<=', $request->luas_tanah)
+        ->where('luas_bangunan', '<=', $request->luas_bangunan)
         ->where(function ($query) use ($keyword, $request){
             $query
                     ->orWhere('harga', '>', $request->harga_minimal)
@@ -608,10 +608,10 @@ class adminApiController extends Controller
         ->paginate(10);
 
         $properti_apartemen = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 6)->where('tayang', 1)
-        ->where('kamar_tidur', $request->kamar_tidur)
-        ->where('kamar_mandi', $request->kamar_mandi)
-        ->where('luas_tanah', $request->luas_tanah)
-        ->where('luas_bangunan', $request->luas_bangunan)
+        ->where('kamar_tidur', '<=', $request->kamar_tidur)
+        ->where('kamar_mandi', '<=', $request->kamar_mandi)
+        ->where('luas_tanah', '<=', $request->luas_tanah)
+        ->where('luas_bangunan', '<=', $request->luas_bangunan)
         ->where(function ($query) use ($keyword, $request){
             $query
                     ->orWhere('harga', '>', $request->harga_minimal)
@@ -626,10 +626,10 @@ class adminApiController extends Controller
         ->paginate(10);
 
         $properti_ruko = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 7)->where('tayang', 1)
-        ->where('kamar_tidur', $request->kamar_tidur)
-        ->where('kamar_mandi', $request->kamar_mandi)
-        ->where('luas_tanah', $request->luas_tanah)
-        ->where('luas_bangunan', $request->luas_bangunan)
+        ->where('kamar_tidur', '<=', $request->kamar_tidur)
+        ->where('kamar_mandi', '<=', $request->kamar_mandi)
+        ->where('luas_tanah', '<=', $request->luas_tanah)
+        ->where('luas_bangunan', '<=', $request->luas_bangunan)
         ->where(function ($query) use ($keyword, $request){
             $query
                     ->orWhere('harga', '>', $request->harga_minimal)

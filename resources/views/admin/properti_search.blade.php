@@ -5,7 +5,7 @@ Properti
 @endsection
 
 @section('mainjudul')
-Properti
+Properti Aktif
 @endsection
 
 @section('subjudul')

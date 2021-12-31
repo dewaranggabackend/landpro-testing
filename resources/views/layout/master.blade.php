@@ -11378,7 +11378,7 @@
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link" href="/users"> Kelola </a>
+                                    <a class="nav-link" href="/users"> Kelola Akun</a>
                                     <a class="nav-link" href="/users/banned"> Akun Terban </a>
                                     <a class="nav-link" href="/users/request"> Request </a>
                                     <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">

@@ -5,7 +5,7 @@ Akun
 @endsection
 
 @section('mainjudul')
-Akun
+Pengguna Terdaftar
 @endsection
 
 @section('subjudul')

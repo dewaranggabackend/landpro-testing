@@ -1,7 +1,7 @@
 @extends('layout.master')
 
 @section('judul')
-Akun
+Kelola Akun
 @endsection
 
 @section('mainjudul')

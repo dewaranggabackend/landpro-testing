@@ -11367,7 +11367,7 @@
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="/properti">Kelola Properti</a>
                                     <a class="nav-link" href="/properti/expire">Properti Expired</a>
-                                    <a class="nav-link" href="/properti/nonaktif">Trash</a>
+                                    <a class="nav-link" href="/properti/nonaktif">Properti Dihapus</a>
                                     <a class="nav-link" href="/kategori">Kategori</a>
                                     <a class="nav-link" href="/informasi">Informasi</a>
                                 </nav>

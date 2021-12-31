@@ -5,7 +5,7 @@ Trash
 @endsection
 
 @section('mainjudul')
-Trash
+Properti Dihapus
 @endsection
 
 @section('subjudul')

@@ -215,7 +215,7 @@ class adminController extends Controller
         $current = date('Y-m-d H:i:s');
         $user = \App\Models\User::count();
         $banned_user = \App\Models\User::onlyTrashed()->count();
-        $properti = \App\Models\properti::where('exp', '>', $current)->orWhere('deleted_at', null)->count();
+        $properti = \App\Models\properti::where('exp', '>', $current)->orWhere('exp', null)->count();
         $properti_rumah = \App\Models\properti::where('category_id', 1)->count();
         $properti_resedensial = \App\Models\properti::where('category_id', 2)->count();
         $properti_tanah = \App\Models\properti::where('category_id', 3)->count();

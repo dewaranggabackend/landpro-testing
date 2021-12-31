@@ -50,11 +50,11 @@ class adminApiController extends Controller
                 'data' => 'Sukes! data berhasil dirubah'
             ]);
         }
+
         return response()->json([
             'status' => 'sukses',
             'data' => 'Maaf! password yang anda masukkan tidak sesuai'
         ]);
-        
     }
 
     public function profileUsers ($id) {

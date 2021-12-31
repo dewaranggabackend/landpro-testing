@@ -52,9 +52,9 @@ class adminApiController extends Controller
         }
 
         return response()->json([
-            'status' => 'sukses',
+            'status' => 'error',
             'data' => 'Maaf! password yang anda masukkan tidak sesuai'
-        ]);
+        ], 400);
     }
 
     public function profileUsers ($id) {

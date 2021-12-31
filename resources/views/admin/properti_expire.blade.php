@@ -37,10 +37,10 @@ Properti Kadaluwarsa
 <div class="scroll">
 <table class="table table-bordered" id="datatablesSimple">
     <tr>
-        <th>#</th>
-        <th>Thumbnail</th>
+        <th>No</th>
+        <th>Foto Properti</th>
         <th>Kategori</th>
-        <th>Nama</th>
+        <th>Nama Properti</th>
         <th>Lokasi</th>
         <th>User</th>
         <th>Harga</th>

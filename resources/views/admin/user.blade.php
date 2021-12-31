@@ -61,13 +61,12 @@ Pengguna Terdaftar
         <a href="/users/{{$pengguna->id}}/downgrade" onclick="return confirm('Apakah kamu yakin?')"><button type="button" class="btn btn-secondary" data-toggle="tooltip" title="Downgrade"><i class="fa fa-chevron-down"></i></button></a>
                 </td>
                 <?php } else { ?>
+                    <td>
                     <a href="/users/{{$pengguna->id}}/ban" onclick="return confirm('Apakah kamu yakin?')"><button type="button" class="btn btn-danger" data-toggle="tooltip" title="Banned"><i class="fa fa-times"></i></button></a>
         <a href="/users/{{$pengguna->id}}/upgrade" onclick="return confirm('Apakah kamu yakin?')"><button type="button" class="btn btn-success" data-toggle="tooltip" title="Upgrade"><i class="fa fa-chevron-up"></i></button></a>
         <a href="/users/{{$pengguna->id}}/downgrade" onclick="return confirm('Apakah kamu yakin?')"><button type="button" class="btn btn-secondary" data-toggle="tooltip" title="Downgrade"><i class="fa fa-chevron-down"></i></button></a>
-                    <?php } ?>
-            <?php } else { ?>
-                <td></td>
-        <?php } ?>
+        </td>            
+        <?php }} ?>
         <?php endforeach; ?>
                 </tr>
 </table>

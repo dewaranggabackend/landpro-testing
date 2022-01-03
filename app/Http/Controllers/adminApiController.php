@@ -873,8 +873,8 @@ class adminApiController extends Controller
                   ->orWhere('provinsi', $keyword)
                   ->orWhere('kabupaten', $keyword)
                   ->orWhere('kecamatan', $keyword);
-        });
-        $properti_ruko->paginate(10);
+        })
+        ->paginate(10);
 
     return response()->json([
         'status' => 'sukses',

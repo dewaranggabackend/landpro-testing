@@ -624,7 +624,7 @@ class adminApiController extends Controller
 
         if (isset($request->kamar_mandi)) {
             if (!isset($request->min_kamar_mandi)) {
-                $request->min_kamar_tidur = 0;
+                $request->min_kamar_mandi = 0;
             }
             
             $properti_tanah->where(function ($query) use ($keyword, $request) {
@@ -677,7 +677,7 @@ class adminApiController extends Controller
 
         if (isset($request->kamar_mandi)) {
             if (!isset($request->min_kamar_mandi)) {
-                $request->min_kamar_tidur = 0;
+                $request->min_kamar_mandi = 0;
             }
             
             $properti_kantor->where(function ($query) use ($keyword, $request) {
@@ -730,7 +730,7 @@ class adminApiController extends Controller
 
         if (isset($request->kamar_mandi)) {
             if (!isset($request->min_kamar_mandi)) {
-                $request->min_kamar_tidur = 0;
+                $request->min_kamar_mandi = 0;
             }
             
             $properti_usaha->where(function ($query) use ($keyword, $request) {
@@ -783,7 +783,7 @@ class adminApiController extends Controller
 
         if (isset($request->kamar_mandi)) {
             if (!isset($request->min_kamar_mandi)) {
-                $request->min_kamar_tidur = 0;
+                $request->min_kamar_mandi = 0;
             }
             
             $properti_apartemen->where(function ($query) use ($keyword, $request) {
@@ -836,7 +836,7 @@ class adminApiController extends Controller
 
         if (isset($request->kamar_mandi)) {
             if (!isset($request->min_kamar_mandi)) {
-                $request->min_kamar_tidur = 0;
+                $request->min_kamar_mandi = 0;
             }
             
             $properti_ruko->where(function ($query) use ($keyword, $request) {

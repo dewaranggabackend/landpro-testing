@@ -200,7 +200,6 @@ class adminApiController extends Controller
     public function favorite ($id) {
         $favorit = \App\Models\favorite::with('properti.pengguna')->where('users_id', $id)->get();
        
-        
         if (!isset($favorit[0])) {
             return response()->json([
                 'status' => 'error',
@@ -255,9 +254,11 @@ class adminApiController extends Controller
         $user = \App\Models\User::where('id', $request->user_id);
         $gambar_1 = $request->avatar;
         $gambar_1_final = time().$gambar_1->getClientOriginalName();
+
         $user->update([
             'avatar' => 'public/uploads/avatar/'.$gambar_1_final,
         ]);
+
         $gambar_1->move('public/uploads/avatar/', $gambar_1_final);
         return response()->json([
             'status' => 'sukses',
@@ -323,6 +324,7 @@ class adminApiController extends Controller
                 'status' => 'error',
                 'data' => 'maaf, request anda sebelumnya sudah ada didalam database'
             ], 304);
+            
         } else {
             $req = \App\Models\request::create($request->all());
             return response()->json([
@@ -495,38 +497,6 @@ class adminApiController extends Controller
             $request->harga_maksimal = 99999999999999;
         }
 
-        if (!isset($request->kamar_tidur)){
-            $request->kamar_tidur = 0;
-        }
-
-        if (!isset($request->kamar_mandi)){
-            $request->kamar_mandi = 0;
-        }
-
-        if (!isset($request->luas_tanah)){
-            $request->luas_tanah = 0;
-        }
-
-        if (!isset($request->luas_bangunan)){
-            $request->luas_bangunan = 0;
-        }
-
-        if (!isset($request->min_kamar_tidur)){
-            $request->min_kamar_tidur = 0;
-        }
-
-        if (!isset($request->min_kamar_mandi)){
-            $request->min_kamar_mandi = 0;
-        }
-
-        if (!isset($request->min_luas_tanah)){
-            $request->min_luas_tanah = 0;
-        }
-
-        if (!isset($request->min_luas_bangunan)){
-            $request->min_luas_bangunan = 0;
-        }
-
         $min = $request->harga_minimal;
         $max = $request->harga_maksimal;
         $kt = $request->kamar_tidur;
@@ -535,20 +505,48 @@ class adminApiController extends Controller
         $lb = $request->luas_bangunan;
 
         $keyword = $request->keyword;
-        $properti = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 1)->where('tayang', 1)
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
-        })
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
-        })
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
-        })
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
-        })
-        ->where(function ($query) use ($keyword, $request){
+        $properti = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 1)->where('tayang', 1);
+        if (isset($request->kamar_tidur)) {
+            if (!isset($request->min_kamar_tidur)){
+                $request->min_kamar_tidur = 0;
+            }
+
+            $properti->where(function ($query) use ($keyword, $request) {
+                $query->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
+            });
+        }
+
+        if (isset($request->kamar_mandi)) {
+            if (!isset($request->min_kamar_mandi)) {
+                $request->min_kamar_tidur = 0;
+            }
+            
+            $properti->where(function ($query) use ($keyword, $request) {
+                $query->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
+            });
+        }
+
+        if (isset($request->luas_tanah)) {
+            if (!isset($request->min_luas_tanah)) {
+                $request->min_luas_tanah = 0;
+            }
+
+            $properti->where(function ($query) use ($keyword, $request) {
+                $query->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
+            });
+        }
+
+        if (isset($request->luas_bangunan)) {
+            if (!isset($request->min_luas_bangunan)) {
+                $request->min_luas_bangunan = 0;
+            }
+
+            $request->where(function ($query) use ($keyword, $request) {
+                $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
+            });
+        }
+
+        $properti->where(function ($query) use ($keyword, $request){
             $query->orWhere('harga', '>', $request->harga_minimal)
                   ->orWhere('harga', '<', $request->harga_maksimal);
         })
@@ -560,23 +558,50 @@ class adminApiController extends Controller
         })
         ->paginate(10);
 
-        $properti_res = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 2)->where('tayang', 1)
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
-        })
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
-        })
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
-        })
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
-        })
-        ->where(function ($query) use ($keyword, $request){
-            $query
-                    ->orWhere('harga', '>', $request->harga_minimal)
-                    ->orWhere('harga', '<', $request->harga_maksimal);
+        $properti_res = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 2)->where('tayang', 1);
+        if (isset($request->kamar_tidur)) {
+            if (!isset($request->min_kamar_tidur)){
+                $request->min_kamar_tidur = 0;
+            }
+
+            $properti_res->where(function ($query) use ($keyword, $request) {
+                $query->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
+            });
+        }
+
+        if (isset($request->kamar_mandi)) {
+            if (!isset($request->min_kamar_mandi)) {
+                $request->min_kamar_tidur = 0;
+            }
+            
+            $properti_res->where(function ($query) use ($keyword, $request) {
+                $query->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
+            });
+        }
+
+        if (isset($request->luas_tanah)) {
+            if (!isset($request->min_luas_tanah)) {
+                $request->min_luas_tanah = 0;
+            }
+
+            $properti_res->where(function ($query) use ($keyword, $request) {
+                $query->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
+            });
+        }
+
+        if (isset($request->luas_bangunan)) {
+            if (!isset($request->min_luas_bangunan)) {
+                $request->min_luas_bangunan = 0;
+            }
+
+            $request->where(function ($query) use ($keyword, $request) {
+                $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
+            });
+        }
+
+        $properti_res->where(function ($query) use ($keyword, $request){
+            $query->orWhere('harga', '>', $request->harga_minimal)
+                  ->orWhere('harga', '<', $request->harga_maksimal);
         })
         ->where(function ($query) use ($keyword, $request){
             $query->orWhere('nama', $keyword)
@@ -586,23 +611,50 @@ class adminApiController extends Controller
         })
         ->paginate(10);
         
-        $properti_tanah = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 3)->where('tayang', 1)
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
-        })
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
-        })
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
-        })
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
-        })
-        ->where(function ($query) use ($keyword, $request){
-            $query
-                    ->orWhere('harga', '>', $request->harga_minimal)
-                    ->orWhere('harga', '<', $request->harga_maksimal);
+        $properti_tanah = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 3)->where('tayang', 1);
+        if (isset($request->kamar_tidur)) {
+            if (!isset($request->min_kamar_tidur)){
+                $request->min_kamar_tidur = 0;
+            }
+
+            $properti_tanah->where(function ($query) use ($keyword, $request) {
+                $query->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
+            });
+        }
+
+        if (isset($request->kamar_mandi)) {
+            if (!isset($request->min_kamar_mandi)) {
+                $request->min_kamar_tidur = 0;
+            }
+            
+            $properti_tanah->where(function ($query) use ($keyword, $request) {
+                $query->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
+            });
+        }
+
+        if (isset($request->luas_tanah)) {
+            if (!isset($request->min_luas_tanah)) {
+                $request->min_luas_tanah = 0;
+            }
+
+            $properti_tanah->where(function ($query) use ($keyword, $request) {
+                $query->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
+            });
+        }
+
+        if (isset($request->luas_bangunan)) {
+            if (!isset($request->min_luas_bangunan)) {
+                $request->min_luas_bangunan = 0;
+            }
+
+            $request->where(function ($query) use ($keyword, $request) {
+                $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
+            });
+        }
+
+        $properti_tanah->where(function ($query) use ($keyword, $request){
+            $query->orWhere('harga', '>', $request->harga_minimal)
+                  ->orWhere('harga', '<', $request->harga_maksimal);
         })
         ->where(function ($query) use ($keyword, $request){
             $query->orWhere('nama', $keyword)
@@ -612,24 +664,51 @@ class adminApiController extends Controller
         })
         ->paginate(10);
 
-        $properti_kantor = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 4)->where('tayang', 1)
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
+        $properti_kantor = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 4)->where('tayang', 1);
+        if (isset($request->kamar_tidur)) {
+            if (!isset($request->min_kamar_tidur)){
+                $request->min_kamar_tidur = 0;
+            }
+
+            $properti_kantor->where(function ($query) use ($keyword, $request) {
+                $query->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
+            });
+        }
+
+        if (isset($request->kamar_mandi)) {
+            if (!isset($request->min_kamar_mandi)) {
+                $request->min_kamar_tidur = 0;
+            }
+            
+            $properti_kantor->where(function ($query) use ($keyword, $request) {
+                $query->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
+            });
+        }
+
+        if (isset($request->luas_tanah)) {
+            if (!isset($request->min_luas_tanah)) {
+                $request->min_luas_tanah = 0;
+            }
+
+            $properti_kantor->where(function ($query) use ($keyword, $request) {
+                $query->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
+            });
+        }
+
+        if (isset($request->luas_bangunan)) {
+            if (!isset($request->min_luas_bangunan)) {
+                $request->min_luas_bangunan = 0;
+            }
+
+            $request->where(function ($query) use ($keyword, $request) {
+                $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
+            });
+        }
+
+        $properti_kantor->where(function ($query) use ($keyword, $request){
+            $query->orWhere('harga', '>', $request->harga_minimal)
+                  ->orWhere('harga', '<', $request->harga_maksimal);
         })
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
-        })
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
-        })
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
-        })
-        ->where(function ($query) use ($keyword, $request){
-            $query
-                    ->orWhere('harga', '>', $request->harga_minimal)
-                    ->orWhere('harga', '<', $request->harga_maksimal);
-                })
         ->where(function ($query) use ($keyword, $request){
             $query->orWhere('nama', $keyword)
                   ->orWhere('provinsi', $keyword)
@@ -638,24 +717,51 @@ class adminApiController extends Controller
         })
         ->paginate(10);
         
-        $properti_usaha = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 5)->where('tayang', 1)
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
+        $properti_usaha = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 5)->where('tayang', 1);
+        if (isset($request->kamar_tidur)) {
+            if (!isset($request->min_kamar_tidur)){
+                $request->min_kamar_tidur = 0;
+            }
+
+            $properti_usaha->where(function ($query) use ($keyword, $request) {
+                $query->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
+            });
+        }
+
+        if (isset($request->kamar_mandi)) {
+            if (!isset($request->min_kamar_mandi)) {
+                $request->min_kamar_tidur = 0;
+            }
+            
+            $properti_usaha->where(function ($query) use ($keyword, $request) {
+                $query->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
+            });
+        }
+
+        if (isset($request->luas_tanah)) {
+            if (!isset($request->min_luas_tanah)) {
+                $request->min_luas_tanah = 0;
+            }
+
+            $properti_usaha->where(function ($query) use ($keyword, $request) {
+                $query->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
+            });
+        }
+
+        if (isset($request->luas_bangunan)) {
+            if (!isset($request->min_luas_bangunan)) {
+                $request->min_luas_bangunan = 0;
+            }
+
+            $request->where(function ($query) use ($keyword, $request) {
+                $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
+            });
+        }
+
+        $properti_usaha->where(function ($query) use ($keyword, $request){
+            $query->orWhere('harga', '>', $request->harga_minimal)
+                  ->orWhere('harga', '<', $request->harga_maksimal);
         })
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
-        })
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
-        })
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
-        })
-        ->where(function ($query) use ($keyword, $request){
-            $query
-                    ->orWhere('harga', '>', $request->harga_minimal)
-                    ->orWhere('harga', '<', $request->harga_maksimal);
-                })
         ->where(function ($query) use ($keyword, $request){
             $query->orWhere('nama', $keyword)
                   ->orWhere('provinsi', $keyword)
@@ -664,24 +770,51 @@ class adminApiController extends Controller
         })
         ->paginate(10);
 
-        $properti_apartemen = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 6)->where('tayang', 1)
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
+        $properti_apartemen = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 6)->where('tayang', 1);
+        if (isset($request->kamar_tidur)) {
+            if (!isset($request->min_kamar_tidur)){
+                $request->min_kamar_tidur = 0;
+            }
+
+            $properti_apartemen->where(function ($query) use ($keyword, $request) {
+                $query->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
+            });
+        }
+
+        if (isset($request->kamar_mandi)) {
+            if (!isset($request->min_kamar_mandi)) {
+                $request->min_kamar_tidur = 0;
+            }
+            
+            $properti_apartemen->where(function ($query) use ($keyword, $request) {
+                $query->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
+            });
+        }
+
+        if (isset($request->luas_tanah)) {
+            if (!isset($request->min_luas_tanah)) {
+                $request->min_luas_tanah = 0;
+            }
+
+            $properti_apartemen->where(function ($query) use ($keyword, $request) {
+                $query->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
+            });
+        }
+
+        if (isset($request->luas_bangunan)) {
+            if (!isset($request->min_luas_bangunan)) {
+                $request->min_luas_bangunan = 0;
+            }
+
+            $request->where(function ($query) use ($keyword, $request) {
+                $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
+            });
+        }
+
+        $properti_apartemen->where(function ($query) use ($keyword, $request){
+            $query->orWhere('harga', '>', $request->harga_minimal)
+                  ->orWhere('harga', '<', $request->harga_maksimal);
         })
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
-        })
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
-        })
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
-        })
-        ->where(function ($query) use ($keyword, $request){
-            $query
-                    ->orWhere('harga', '>', $request->harga_minimal)
-                    ->orWhere('harga', '<', $request->harga_maksimal);
-                })
         ->where(function ($query) use ($keyword, $request){
             $query->orWhere('nama', $keyword)
                   ->orWhere('provinsi', $keyword)
@@ -690,24 +823,51 @@ class adminApiController extends Controller
         })
         ->paginate(10);
 
-        $properti_ruko = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 7)->where('tayang', 1)
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
+        $properti_ruko = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 7)->where('tayang', 1);
+        if (isset($request->kamar_tidur)) {
+            if (!isset($request->min_kamar_tidur)){
+                $request->min_kamar_tidur = 0;
+            }
+
+            $properti_ruko->where(function ($query) use ($keyword, $request) {
+                $query->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
+            });
+        }
+
+        if (isset($request->kamar_mandi)) {
+            if (!isset($request->min_kamar_mandi)) {
+                $request->min_kamar_tidur = 0;
+            }
+            
+            $properti_ruko->where(function ($query) use ($keyword, $request) {
+                $query->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
+            });
+        }
+
+        if (isset($request->luas_tanah)) {
+            if (!isset($request->min_luas_tanah)) {
+                $request->min_luas_tanah = 0;
+            }
+
+            $properti_ruko->where(function ($query) use ($keyword, $request) {
+                $query->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
+            });
+        }
+
+        if (isset($request->luas_bangunan)) {
+            if (!isset($request->min_luas_bangunan)) {
+                $request->min_luas_bangunan = 0;
+            }
+
+            $request->where(function ($query) use ($keyword, $request) {
+                $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
+            });
+        }
+
+        $properti_ruko->where(function ($query) use ($keyword, $request){
+            $query->orWhere('harga', '>', $request->harga_minimal)
+                  ->orWhere('harga', '<', $request->harga_maksimal);
         })
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
-        })
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
-        })
-        ->where(function ($query) use ($keyword, $request) {
-            $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
-        })
-        ->where(function ($query) use ($keyword, $request){
-            $query
-                    ->orWhere('harga', '>', $request->harga_minimal)
-                    ->orWhere('harga', '<', $request->harga_maksimal);
-                })
         ->where(function ($query) use ($keyword, $request){
             $query->orWhere('nama', $keyword)
                   ->orWhere('provinsi', $keyword)
@@ -896,10 +1056,9 @@ class adminApiController extends Controller
             $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
         })
         ->where(function ($query) use ($keyword, $request){
-            $query
-                    ->orWhere('harga', '>', $request->harga_minimal)
-                    ->orWhere('harga', '<', $request->harga_maksimal);
-                })
+            $query->orWhere('harga', '>', $request->harga_minimal)
+                ->orWhere('harga', '<', $request->harga_maksimal);
+        })
         ->where(function ($query) use ($keyword, $request){
             $query->orWhere('nama', $keyword)
                   ->orWhere('provinsi', $keyword)

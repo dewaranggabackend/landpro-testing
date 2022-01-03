@@ -547,8 +547,7 @@ class adminApiController extends Controller
                   ->orWhere('provinsi', $keyword)
                   ->orWhere('kabupaten', $keyword)
                   ->orWhere('kecamatan', $keyword);
-        })
-        ->paginate(10);
+        });
 
         $properti_res = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 2)->where('tayang', 1);
         if (isset($request->kamar_tidur)) {
@@ -592,8 +591,7 @@ class adminApiController extends Controller
                   ->orWhere('provinsi', $keyword)
                   ->orWhere('kabupaten', $keyword)
                   ->orWhere('kecamatan', $keyword);
-        })
-        ->paginate(10);
+        });
         
         $properti_tanah = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 3)->where('tayang', 1);
         if (isset($request->kamar_tidur)) {
@@ -637,8 +635,7 @@ class adminApiController extends Controller
                   ->orWhere('provinsi', $keyword)
                   ->orWhere('kabupaten', $keyword)
                   ->orWhere('kecamatan', $keyword);
-        })
-        ->paginate(10);
+        });
 
         $properti_kantor = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 4)->where('tayang', 1);
         if (isset($request->kamar_tidur)) {
@@ -682,8 +679,7 @@ class adminApiController extends Controller
                   ->orWhere('provinsi', $keyword)
                   ->orWhere('kabupaten', $keyword)
                   ->orWhere('kecamatan', $keyword);
-        })
-        ->paginate(10);
+        });
         
         $properti_usaha = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 5)->where('tayang', 1);
         if (isset($request->kamar_tidur)) {
@@ -727,8 +723,7 @@ class adminApiController extends Controller
                   ->orWhere('provinsi', $keyword)
                   ->orWhere('kabupaten', $keyword)
                   ->orWhere('kecamatan', $keyword);
-        })
-        ->paginate(10);
+        });
 
         $properti_apartemen = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 6)->where('tayang', 1);
         if (isset($request->kamar_tidur)) {
@@ -772,8 +767,7 @@ class adminApiController extends Controller
                   ->orWhere('provinsi', $keyword)
                   ->orWhere('kabupaten', $keyword)
                   ->orWhere('kecamatan', $keyword);
-        })
-        ->paginate(10);
+        });
 
         $properti_ruko = \App\Models\properti::with('pengguna')->where('jenis', 1)->where('category_id', 7)->where('tayang', 1);
         if (isset($request->kamar_tidur)) {
@@ -817,18 +811,17 @@ class adminApiController extends Controller
                   ->orWhere('provinsi', $keyword)
                   ->orWhere('kabupaten', $keyword)
                   ->orWhere('kecamatan', $keyword);
-        })
-        ->paginate(10);
+        });
 
     return response()->json([
         'status' => 'sukses',
-        'rumah' => $properti->get(),
-        'resedensial' => $properti_res,
-        'tanah' => $properti_tanah,
-        'kantor' => $properti_kantor,
-        'usaha' => $properti_usaha,
-        'apartemen' => $properti_apartemen,
-        'ruko' => $properti_ruko,
+        'rumah' => $properti->paginate(10),
+        'resedensial' => $properti_res->paginate(10),
+        'tanah' => $properti_tanah->paginate(10),
+        'kantor' => $properti_kantor->paginate(10),
+        'usaha' => $properti_usaha->paginate(10),
+        'apartemen' => $properti_apartemen->paginate(10),
+        'ruko' => $properti_ruko->paginate(10),
     ], 200);
 
     }

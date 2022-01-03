@@ -878,7 +878,7 @@ class adminApiController extends Controller
 
     return response()->json([
         'status' => 'sukses',
-        'rumah' => $properti,
+        'rumah' => $properti->paginate(10),
         'resedensial' => $properti_res,
         'tanah' => $properti_tanah,
         'kantor' => $properti_kantor,

@@ -541,7 +541,7 @@ class adminApiController extends Controller
                 $request->min_luas_bangunan = 0;
             }
 
-            $request->where(function ($query) use ($keyword, $request) {
+            $properti->where(function ($query) use ($keyword, $request) {
                 $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
             });
         }
@@ -594,7 +594,7 @@ class adminApiController extends Controller
                 $request->min_luas_bangunan = 0;
             }
 
-            $request->where(function ($query) use ($keyword, $request) {
+            $properti_res->where(function ($query) use ($keyword, $request) {
                 $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
             });
         }
@@ -647,7 +647,7 @@ class adminApiController extends Controller
                 $request->min_luas_bangunan = 0;
             }
 
-            $request->where(function ($query) use ($keyword, $request) {
+            $properti_tanah->where(function ($query) use ($keyword, $request) {
                 $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
             });
         }
@@ -700,7 +700,7 @@ class adminApiController extends Controller
                 $request->min_luas_bangunan = 0;
             }
 
-            $request->where(function ($query) use ($keyword, $request) {
+            $properti_kantor->where(function ($query) use ($keyword, $request) {
                 $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
             });
         }
@@ -753,7 +753,7 @@ class adminApiController extends Controller
                 $request->min_luas_bangunan = 0;
             }
 
-            $request->where(function ($query) use ($keyword, $request) {
+            $properti_usaha->where(function ($query) use ($keyword, $request) {
                 $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
             });
         }
@@ -806,7 +806,7 @@ class adminApiController extends Controller
                 $request->min_luas_bangunan = 0;
             }
 
-            $request->where(function ($query) use ($keyword, $request) {
+            $properti_apartemen->where(function ($query) use ($keyword, $request) {
                 $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
             });
         }
@@ -859,7 +859,7 @@ class adminApiController extends Controller
                 $request->min_luas_bangunan = 0;
             }
 
-            $request->where(function ($query) use ($keyword, $request) {
+            $properti_ruko->where(function ($query) use ($keyword, $request) {
                 $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
             });
         }

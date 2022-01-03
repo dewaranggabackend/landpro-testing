@@ -571,7 +571,7 @@ class adminApiController extends Controller
 
         if (isset($request->kamar_mandi)) {
             if (!isset($request->min_kamar_mandi)) {
-                $request->min_kamar_tidur = 0;
+                $request->min_kamar_mandi = 0;
             }
             
             $properti_res->where(function ($query) use ($keyword, $request) {

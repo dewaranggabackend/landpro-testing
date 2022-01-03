@@ -511,9 +511,7 @@ class adminApiController extends Controller
                 $request->min_kamar_tidur = 0;
             }
 
-            $properti->where(function ($query) use ($keyword, $request) {
-                $query->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
-            });
+            $properti->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
         }
 
         if (isset($request->kamar_mandi)) {
@@ -521,9 +519,7 @@ class adminApiController extends Controller
                 $request->min_kamar_mandi = 0;
             }
             
-            $properti->where(function ($query) use ($keyword, $request) {
-                $query->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
-            });
+            $properti->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
         }
 
         if (isset($request->luas_tanah)) {
@@ -531,9 +527,7 @@ class adminApiController extends Controller
                 $request->min_luas_tanah = 0;
             }
 
-            $properti->where(function ($query) use ($keyword, $request) {
-                $query->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
-            });
+            $properti->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
         }
 
         if (isset($request->luas_bangunan)) {
@@ -541,9 +535,7 @@ class adminApiController extends Controller
                 $request->min_luas_bangunan = 0;
             }
 
-            $properti->where(function ($query) use ($keyword, $request) {
-                $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
-            });
+            $properti->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
         }
 
         $properti->where(function ($query) use ($keyword, $request){
@@ -564,9 +556,7 @@ class adminApiController extends Controller
                 $request->min_kamar_tidur = 0;
             }
 
-            $properti_res->where(function ($query) use ($keyword, $request) {
-                $query->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
-            });
+            $properti_res->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
         }
 
         if (isset($request->kamar_mandi)) {
@@ -574,9 +564,7 @@ class adminApiController extends Controller
                 $request->min_kamar_mandi = 0;
             }
             
-            $properti_res->where(function ($query) use ($keyword, $request) {
-                $query->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
-            });
+            $properti_res->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
         }
 
         if (isset($request->luas_tanah)) {
@@ -584,9 +572,7 @@ class adminApiController extends Controller
                 $request->min_luas_tanah = 0;
             }
 
-            $properti_res->where(function ($query) use ($keyword, $request) {
-                $query->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
-            });
+            $properti_res->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
         }
 
         if (isset($request->luas_bangunan)) {
@@ -594,9 +580,7 @@ class adminApiController extends Controller
                 $request->min_luas_bangunan = 0;
             }
 
-            $properti_res->where(function ($query) use ($keyword, $request) {
-                $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
-            });
+            $properti_res->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
         }
 
         $properti_res->where(function ($query) use ($keyword, $request){
@@ -617,9 +601,7 @@ class adminApiController extends Controller
                 $request->min_kamar_tidur = 0;
             }
 
-            $properti_tanah->where(function ($query) use ($keyword, $request) {
-                $query->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
-            });
+            $properti_tanah->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
         }
 
         if (isset($request->kamar_mandi)) {
@@ -627,9 +609,7 @@ class adminApiController extends Controller
                 $request->min_kamar_mandi = 0;
             }
             
-            $properti_tanah->where(function ($query) use ($keyword, $request) {
-                $query->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
-            });
+            $properti_tanah->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
         }
 
         if (isset($request->luas_tanah)) {
@@ -637,9 +617,7 @@ class adminApiController extends Controller
                 $request->min_luas_tanah = 0;
             }
 
-            $properti_tanah->where(function ($query) use ($keyword, $request) {
-                $query->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
-            });
+            $properti_tanah->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
         }
 
         if (isset($request->luas_bangunan)) {
@@ -647,9 +625,7 @@ class adminApiController extends Controller
                 $request->min_luas_bangunan = 0;
             }
 
-            $properti_tanah->where(function ($query) use ($keyword, $request) {
-                $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
-            });
+            $properti_tanah->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
         }
 
         $properti_tanah->where(function ($query) use ($keyword, $request){
@@ -670,9 +646,7 @@ class adminApiController extends Controller
                 $request->min_kamar_tidur = 0;
             }
 
-            $properti_kantor->where(function ($query) use ($keyword, $request) {
-                $query->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
-            });
+            $properti_kantor->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
         }
 
         if (isset($request->kamar_mandi)) {
@@ -680,9 +654,7 @@ class adminApiController extends Controller
                 $request->min_kamar_mandi = 0;
             }
             
-            $properti_kantor->where(function ($query) use ($keyword, $request) {
-                $query->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
-            });
+            $properti_kantor->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
         }
 
         if (isset($request->luas_tanah)) {
@@ -690,9 +662,7 @@ class adminApiController extends Controller
                 $request->min_luas_tanah = 0;
             }
 
-            $properti_kantor->where(function ($query) use ($keyword, $request) {
-                $query->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
-            });
+            $properti_kantor->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
         }
 
         if (isset($request->luas_bangunan)) {
@@ -700,9 +670,7 @@ class adminApiController extends Controller
                 $request->min_luas_bangunan = 0;
             }
 
-            $properti_kantor->where(function ($query) use ($keyword, $request) {
-                $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
-            });
+            $properti_kantor->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
         }
 
         $properti_kantor->where(function ($query) use ($keyword, $request){
@@ -723,9 +691,7 @@ class adminApiController extends Controller
                 $request->min_kamar_tidur = 0;
             }
 
-            $properti_usaha->where(function ($query) use ($keyword, $request) {
-                $query->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
-            });
+            $properti_usaha->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
         }
 
         if (isset($request->kamar_mandi)) {
@@ -733,9 +699,7 @@ class adminApiController extends Controller
                 $request->min_kamar_mandi = 0;
             }
             
-            $properti_usaha->where(function ($query) use ($keyword, $request) {
-                $query->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
-            });
+            $properti_usaha->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
         }
 
         if (isset($request->luas_tanah)) {
@@ -743,9 +707,7 @@ class adminApiController extends Controller
                 $request->min_luas_tanah = 0;
             }
 
-            $properti_usaha->where(function ($query) use ($keyword, $request) {
-                $query->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
-            });
+            $properti_usaha->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
         }
 
         if (isset($request->luas_bangunan)) {
@@ -753,9 +715,7 @@ class adminApiController extends Controller
                 $request->min_luas_bangunan = 0;
             }
 
-            $properti_usaha->where(function ($query) use ($keyword, $request) {
-                $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
-            });
+            $properti_usaha->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
         }
 
         $properti_usaha->where(function ($query) use ($keyword, $request){
@@ -776,9 +736,7 @@ class adminApiController extends Controller
                 $request->min_kamar_tidur = 0;
             }
 
-            $properti_apartemen->where(function ($query) use ($keyword, $request) {
-                $query->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
-            });
+            $properti_apartemen->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
         }
 
         if (isset($request->kamar_mandi)) {
@@ -786,9 +744,7 @@ class adminApiController extends Controller
                 $request->min_kamar_mandi = 0;
             }
             
-            $properti_apartemen->where(function ($query) use ($keyword, $request) {
-                $query->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
-            });
+            $properti_apartemen->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
         }
 
         if (isset($request->luas_tanah)) {
@@ -796,9 +752,7 @@ class adminApiController extends Controller
                 $request->min_luas_tanah = 0;
             }
 
-            $properti_apartemen->where(function ($query) use ($keyword, $request) {
-                $query->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
-            });
+            $properti_apartemen->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
         }
 
         if (isset($request->luas_bangunan)) {
@@ -806,9 +760,7 @@ class adminApiController extends Controller
                 $request->min_luas_bangunan = 0;
             }
 
-            $properti_apartemen->where(function ($query) use ($keyword, $request) {
-                $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
-            });
+            $properti_apartemen->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
         }
 
         $properti_apartemen->where(function ($query) use ($keyword, $request){
@@ -829,9 +781,7 @@ class adminApiController extends Controller
                 $request->min_kamar_tidur = 0;
             }
 
-            $properti_ruko->where(function ($query) use ($keyword, $request) {
-                $query->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
-            });
+            $properti_ruko->where('kamar_tidur', '>=', $request->min_kamar_tidur)->where('kamar_tidur', '<=', $request->kamar_tidur);
         }
 
         if (isset($request->kamar_mandi)) {
@@ -839,9 +789,7 @@ class adminApiController extends Controller
                 $request->min_kamar_mandi = 0;
             }
             
-            $properti_ruko->where(function ($query) use ($keyword, $request) {
-                $query->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
-            });
+            $properti_ruko->where('kamar_mandi', '>=', $request->min_kamar_mandi)->where('kamar_mandi', '<=', $request->kamar_mandi);
         }
 
         if (isset($request->luas_tanah)) {
@@ -849,9 +797,7 @@ class adminApiController extends Controller
                 $request->min_luas_tanah = 0;
             }
 
-            $properti_ruko->where(function ($query) use ($keyword, $request) {
-                $query->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
-            });
+            $properti_ruko->where('luas_tanah', '>=', $request->min_luas_tanah)->where('luas_tanah', '<=', $request->luas_tanah);
         }
 
         if (isset($request->luas_bangunan)) {
@@ -859,9 +805,7 @@ class adminApiController extends Controller
                 $request->min_luas_bangunan = 0;
             }
 
-            $properti_ruko->where(function ($query) use ($keyword, $request) {
-                $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
-            });
+            $properti_ruko->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
         }
 
         $properti_ruko->where(function ($query) use ($keyword, $request){

@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
     Route::middleware('client')->group(function () {
-        Route::post('/properti/filter', 'App\Http\Controllers\adminApiController@filter');
+        Route::get('/properti/filter', 'App\Http\Controllers\adminApiController@filter');
         Route::post('/properti/filter-sewa', 'App\Http\Controllers\adminApiController@filterSewa');
         Route::post('/register', 'App\Http\Controllers\userApiController@register');
         Route::post('/login', 'App\Http\Controllers\userApiController@login');

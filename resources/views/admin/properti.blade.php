@@ -70,8 +70,10 @@ Properti Aktif
         } else { 
             echo $properti->pengguna->name;
         } ?></td>
-        <td>{{$properti->harga}}</td>
         <td><?php 
+            echo "Rp " . number_format($properti->harga,2,',','.');
+        ?></td>
+        <td><?php
             if ($properti->tayang !== 0) {
                 echo "Tayang";
             } else {

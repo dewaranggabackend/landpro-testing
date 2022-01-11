@@ -79,6 +79,7 @@
     <div class="table-responsive-xl">
     <table class="table table-bordered" id="datatablesSimple">
         <tr>
+            <th>Provinsi</th>
             <th>Kamar Tidur</th>
             <th>Kamar Mandi</th>
             <th>Luas Bangunan</th>
@@ -95,6 +96,7 @@
         </tr>
    
     <tr>
+    <td>{{$properties->provinsi}}</td>
     <td>{{$properties->kamar_tidur}}</td>
     <td>{{$properties->kamar_mandi}}</td>
     <td>{{$properties->luas_bangunan}}</td>

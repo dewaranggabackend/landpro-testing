@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 use GuzzleHttp\Client;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Support\Facades\Hash;
+use Validator;
 
 class adminApiController extends Controller
 {
@@ -1893,6 +1894,14 @@ class adminApiController extends Controller
     public function tambahPropertiPost (Request $request) {
         $access = \App\Models\properti::with('pengguna')->where('tayang', 0)->where('user_id', $request->user_id)->get();
         $g_access = count($access);
+
+        $validation = Validator::make($request->all(), [
+            'harga_uang_muka' => ['nullable', 'numeric']
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json($validation->messages());
+        }
 
         if ($g_access >= 5) {
             return response()->json([

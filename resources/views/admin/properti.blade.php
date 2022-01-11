@@ -34,7 +34,7 @@ Properti Aktif
 <form class="d-md-inline-block" style="float: right;" method="GET" action="/properti/search">
                 <div class="input-group">
                     <input class="form-control" type="text" placeholder="Cari properti..." name="cari" aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-secondary" id="btnNavbarSearch" type="submit"><i class="fas fa-search"></i></button>
+                    <button class="btn btn-s econdary" id="btnNavbarSearch" type="submit"><i class="fas fa-search"></i></button>
                 </div>
             </form>
 </div>

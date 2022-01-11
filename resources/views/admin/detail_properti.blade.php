@@ -101,9 +101,9 @@
     <tr>
     <td><?php
     if ($properties->status == 1) {
-        echo "Jual";
-    } else {
         echo "Sewa";
+    } else {
+        echo "Jual";
     }
     ?></td>
     <td>{{$properties->provinsi}}</td>

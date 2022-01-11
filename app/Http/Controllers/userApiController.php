@@ -76,11 +76,11 @@ class userApiController extends BaseController
     }
 
     public function login (Request $request) {
-        $data = \App\Models\User::where('email', $request->email)->get();
-
-        if ($data[0] == null) {
+        if (\App\Models\User::where('email', $request->email)->first()) {
             return $this->responseError('Login failed.', 403, 'Akun anda telah dibanned.');
         }
+
+        $data = \App\Models\User::where('email', $request->email)->get();
 
         if ($data[0]->isVerified == 0) {
             return response()->json([

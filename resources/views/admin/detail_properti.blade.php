@@ -99,12 +99,11 @@
    
     <tr>
     <td>{{$properties->provinsi}}</td>
-    <td>{{$properties->kota}}</td>
+    <td>{{$properties->kabupaten}}</td>
     <td>{{$properties->kecamatan}}</td>
     <td>{{$properties->kamar_tidur}}</td>
     <td>{{$properties->kamar_mandi}}</td>
     <td>{{$properties->luas_bangunan}}</td>
-  
     <td>{{$properties->jumlah_lantai}}</td>
     <td>{{$properties->kamar_tidur_art}}</td>
     <td>{{$properties->kamar_mandi_art}}</td>

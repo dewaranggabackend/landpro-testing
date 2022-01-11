@@ -80,6 +80,8 @@
     <table class="table table-bordered" id="datatablesSimple">
         <tr>
             <th>Provinsi</th>
+            <th>Kota / Kabupaten</th>
+            <th>Kecamatan</th>
             <th>Kamar Tidur</th>
             <th>Kamar Mandi</th>
             <th>Luas Bangunan</th>
@@ -97,6 +99,8 @@
    
     <tr>
     <td>{{$properties->provinsi}}</td>
+    <td>{{$properties->kota}}</td>
+    <td>{{$properties->kecamatan}}</td>
     <td>{{$properties->kamar_tidur}}</td>
     <td>{{$properties->kamar_mandi}}</td>
     <td>{{$properties->luas_bangunan}}</td>

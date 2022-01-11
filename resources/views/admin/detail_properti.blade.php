@@ -79,6 +79,7 @@
     <div class="table-responsive-xl">
     <table class="table table-bordered" id="datatablesSimple">
         <tr>
+            <th>Status</th>
             <th>Provinsi</th>
             <th>Kota / Kabupaten</th>
             <th>Kecamatan</th>
@@ -98,6 +99,13 @@
         </tr>
    
     <tr>
+    <td><?php
+    if ($properties->status == 1) {
+        echo "Jual";
+    } else {
+        echo "Sewa";
+    }
+    ?></td>
     <td>{{$properties->provinsi}}</td>
     <td>{{$properties->kabupaten}}</td>
     <td>{{$properties->kecamatan}}</td>

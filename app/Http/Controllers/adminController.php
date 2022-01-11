@@ -147,6 +147,8 @@ class adminController extends Controller
     public function hapus ($id) {
         $user = \App\Models\User::withTrashed()->find($id);
         \App\Models\properti::where('user_id', $id)->delete();
+        \App\Models\favorite::where('users_id', $id)->delete();
+        \App\Models\agenf::where('user_id', $id)->orWhere('agen_id', $id)->delete();
         $user->forceDelete();
         return redirect ('/users/banned')->with('sukses', 'Sukses! akun berhasil dihapus permanen.');
     }

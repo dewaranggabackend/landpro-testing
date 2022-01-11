@@ -84,6 +84,11 @@ class userApiController extends BaseController
                 'user'=> $data
             ], 400);
         }
+
+        if ($data['deleted_at'] != null) {
+            return $this->responseError('Login failed', 422, 'Akun anda telah diban.');
+        }
+
         $validator = Validator::make($request->all(), [
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],

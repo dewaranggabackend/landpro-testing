@@ -80,9 +80,9 @@ class userApiController extends BaseController
             return $this->responseError('Login failed.', 403, 'Akun anda telah dibanned.');
         }
 
-        $data = \App\Models\User::where('email', $request->email)->get();
+        $data = \App\Models\User::where('email', $request->email)->first();
 
-        if ($data[0]->isVerified == 0) {
+        if ($data->isVerified == 0) {
             return response()->json([
                 'status' => 'gagal',
                 'data' => 'Silahkan verifikasi OTP terlebih dahulu',

@@ -76,17 +76,18 @@ class userApiController extends BaseController
     }
 
     public function login (Request $request) {
-        $data = \App\Models\User::where('email', $request->email)->get();
+        try {
+            $data = \App\Models\User::where('email', $request->email)->get();
+        } catch (Exception $e) {
+            return $this->responseError('Login failed', 403, 'Akun anda telah dibanned.');
+        }
+
         if ($data[0]->isVerified == 0) {
             return response()->json([
                 'status' => 'gagal',
                 'data' => 'Silahkan verifikasi OTP terlebih dahulu',
                 'user'=> $data
             ], 400);
-        }
-
-        if ($data['deleted_at'] != null) {
-            return $this->responseError('Login failed', 422, 'Akun anda telah diban.');
         }
 
         $validator = Validator::make($request->all(), [

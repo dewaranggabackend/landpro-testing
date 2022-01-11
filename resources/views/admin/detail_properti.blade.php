@@ -76,7 +76,7 @@
  <div class="card mb-4">
 <div class="card-body">
     </center>
-    <div class="table-responsive">
+    <div class="table-responsive-sm">
     <table class="table table-bordered" id="datatablesSimple">
         <tr>
             <th>Kamar Tidur</th>

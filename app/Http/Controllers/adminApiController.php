@@ -583,8 +583,8 @@ class adminApiController extends Controller
         }
 
         $properti_res->where(function ($query) use ($keyword, $request){
-            $query->orWhere('harga', '>', $request->harga_minimal)
-                  ->orWhere('harga', '<', $request->harga_maksimal);
+            $query->where('harga', '>', $request->harga_minimal)
+                  ->where('harga', '<', $request->harga_maksimal);
         })
         ->where(function ($query) use ($keyword, $request){
             $query->orWhere('nama', $keyword)
@@ -627,8 +627,8 @@ class adminApiController extends Controller
         }
 
         $properti_tanah->where(function ($query) use ($keyword, $request){
-            $query->orWhere('harga', '>', $request->harga_minimal)
-                  ->orWhere('harga', '<', $request->harga_maksimal);
+            $query->where('harga', '>', $request->harga_minimal)
+                  ->where('harga', '<', $request->harga_maksimal);
         })
         ->where(function ($query) use ($keyword, $request){
             $query->orWhere('nama', $keyword)
@@ -671,8 +671,8 @@ class adminApiController extends Controller
         }
 
         $properti_kantor->where(function ($query) use ($keyword, $request){
-            $query->orWhere('harga', '>', $request->harga_minimal)
-                  ->orWhere('harga', '<', $request->harga_maksimal);
+            $query->where('harga', '>', $request->harga_minimal)
+                  ->where('harga', '<', $request->harga_maksimal);
         })
         ->where(function ($query) use ($keyword, $request){
             $query->orWhere('nama', $keyword)
@@ -715,8 +715,8 @@ class adminApiController extends Controller
         }
 
         $properti_usaha->where(function ($query) use ($keyword, $request){
-            $query->orWhere('harga', '>', $request->harga_minimal)
-                  ->orWhere('harga', '<', $request->harga_maksimal);
+            $query->where('harga', '>', $request->harga_minimal)
+                  ->where('harga', '<', $request->harga_maksimal);
         })
         ->where(function ($query) use ($keyword, $request){
             $query->orWhere('nama', $keyword)
@@ -759,8 +759,8 @@ class adminApiController extends Controller
         }
 
         $properti_apartemen->where(function ($query) use ($keyword, $request){
-            $query->orWhere('harga', '>', $request->harga_minimal)
-                  ->orWhere('harga', '<', $request->harga_maksimal);
+            $query->where('harga', '>', $request->harga_minimal)
+                  ->where('harga', '<', $request->harga_maksimal);
         })
         ->where(function ($query) use ($keyword, $request){
             $query->orWhere('nama', $keyword)
@@ -803,8 +803,8 @@ class adminApiController extends Controller
         }
 
         $properti_ruko->where(function ($query) use ($keyword, $request){
-            $query->orWhere('harga', '>', $request->harga_minimal)
-                  ->orWhere('harga', '<', $request->harga_maksimal);
+            $query->where('harga', '>', $request->harga_minimal)
+                  ->where('harga', '<', $request->harga_maksimal);
         })
         ->where(function ($query) use ($keyword, $request){
             $query->orWhere('nama', $keyword)
@@ -890,8 +890,8 @@ class adminApiController extends Controller
         })
         ->where(function ($query) use ($keyword, $request){
             $query
-                    ->orWhere('harga', '>', $request->harga_minimal)
-                    ->orWhere('harga', '<', $request->harga_maksimal);
+                    ->where('harga', '>', $request->harga_minimal)
+                    ->where('harga', '<', $request->harga_maksimal);
                 })
         ->where(function ($query) use ($keyword, $request){
             $query->orWhere('nama', $keyword)
@@ -916,8 +916,8 @@ class adminApiController extends Controller
         })
         ->where(function ($query) use ($keyword, $request){
             $query
-                    ->orWhere('harga', '>', $request->harga_minimal)
-                    ->orWhere('harga', '<', $request->harga_maksimal);
+                    ->where('harga', '>', $request->harga_minimal)
+                    ->where('harga', '<', $request->harga_maksimal);
                 })
         ->where(function ($query) use ($keyword, $request){
             $query->orWhere('nama', $keyword)
@@ -942,8 +942,8 @@ class adminApiController extends Controller
         })
         ->where(function ($query) use ($keyword, $request){
             $query
-                    ->orWhere('harga', '>', $request->harga_minimal)
-                    ->orWhere('harga', '<', $request->harga_maksimal);
+                    ->where('harga', '>', $request->harga_minimal)
+                    ->where('harga', '<', $request->harga_maksimal);
         })
         ->where(function ($query) use ($keyword, $request){
             $query->orWhere('nama', $keyword)
@@ -968,8 +968,8 @@ class adminApiController extends Controller
         })
         ->where(function ($query) use ($keyword, $request){
             $query
-                    ->orWhere('harga', '>', $request->harga_minimal)
-                    ->orWhere('harga', '<', $request->harga_maksimal);
+                    ->where('harga', '>', $request->harga_minimal)
+                    ->where('harga', '<', $request->harga_maksimal);
         })
         ->where(function ($query) use ($keyword, $request){
             $query->orWhere('nama', $keyword)
@@ -993,8 +993,8 @@ class adminApiController extends Controller
             $query->where('luas_bangunan', '>=', $request->min_luas_bangunan)->where('luas_bangunan', '<=', $request->luas_bangunan);
         })
         ->where(function ($query) use ($keyword, $request){
-            $query->orWhere('harga', '>', $request->harga_minimal)
-                ->orWhere('harga', '<', $request->harga_maksimal);
+            $query->where('harga', '>', $request->harga_minimal)
+                ->where('harga', '<', $request->harga_maksimal);
         })
         ->where(function ($query) use ($keyword, $request){
             $query->orWhere('nama', $keyword)
@@ -1019,8 +1019,8 @@ class adminApiController extends Controller
         })
         ->where(function ($query) use ($keyword, $request){
             $query
-                    ->orWhere('harga', '>', $request->harga_minimal)
-                    ->orWhere('harga', '<', $request->harga_maksimal);
+                    ->where('harga', '>', $request->harga_minimal)
+                    ->where('harga', '<', $request->harga_maksimal);
                 })
         ->where(function ($query) use ($keyword, $request){
             $query->orWhere('nama', $keyword)
@@ -1045,8 +1045,8 @@ class adminApiController extends Controller
         })
         ->where(function ($query) use ($keyword, $request){
             $query
-                    ->orWhere('harga', '>', $request->harga_minimal)
-                    ->orWhere('harga', '<', $request->harga_maksimal);
+                    ->where('harga', '>', $request->harga_minimal)
+                    ->where('harga', '<', $request->harga_maksimal);
                 })
         ->where(function ($query) use ($keyword, $request){
             $query->orWhere('nama', $keyword)

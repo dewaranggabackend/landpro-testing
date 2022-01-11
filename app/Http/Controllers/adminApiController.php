@@ -539,8 +539,8 @@ class adminApiController extends Controller
         }
 
         $properti->where(function ($query) use ($keyword, $request){
-            $query->orWhere('harga', '>', $request->harga_minimal)
-                  ->orWhere('harga', '<', $request->harga_maksimal);
+            $query->where('harga', '>', $request->harga_minimal)
+                  ->where('harga', '<', $request->harga_maksimal);
         })
         ->where(function ($query) use ($keyword, $request){
             $query->orWhere('nama', $keyword)

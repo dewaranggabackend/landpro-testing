@@ -1,6 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\API\PropertiController;
+use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\adminApiController;
+use App\Http\Controllers\userApiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,50 +18,63 @@ use Illuminate\Support\Facades\Route;
 */
 
     Route::middleware('client')->group(function () {
-        Route::post('/properti/filter', 'App\Http\Controllers\adminApiController@filter');
-        Route::post('/properti/filter-sewa', 'App\Http\Controllers\adminApiController@filterSewa');
         Route::post('/register', 'App\Http\Controllers\userApiController@register');
         Route::post('/login', 'App\Http\Controllers\userApiController@login');
         Route::post('/sorry', 'App\Http\Controllers\userApiController@sorry');
-        Route::get('/properti', [App\Http\Controllers\adminApiController::class, 'properti']);
-        Route::post('/properti/search', 'App\Http\Controllers\adminApiController@search');
-        Route::post('/properti/search-sewa', 'App\Http\Controllers\adminApiController@searchSewa');
-        Route::post('/users/{id}/verification', [App\Http\Controllers\adminApiController::class, 'verification']);
-        Route::post('/forgot-password', 'App\Http\Controllers\adminApiController@forgotPass');
-        Route::post('/forgot-password/{id}/verificate', 'App\Http\Controllers\adminApiController@forgotPassVer');
-        Route::post('/forgot-password/{id}/verificate/password', 'App\Http\Controllers\adminApiController@forgotPassVerPass');
-        Route::get('/informasi', 'App\Http\Controllers\adminApiController@informasi');
-        Route::get('/privasi', [App\Http\Controllers\adminApiController::class, 'privasi']);
-        Route::get('/syarat', [App\Http\Controllers\adminApiController::class, 'syarat']);
-        Route::get('/pesan-wa', [App\Http\Controllers\adminApiController::class, 'pesanWa']);
-        Route::get('/tentang', [App\Http\Controllers\adminApiController::class, 'tentang']);
-        Route::get('/faq', [App\Http\Controllers\adminApiController::class, 'faq']);
-        Route::get('/customer-services', [App\Http\Controllers\adminApiController::class, 'customerServices']);
-        Route::get('/faq/{id}/detail', [App\Http\Controllers\adminApiController::class, 'faq_detail']);
-        Route::get('/users/profile/{id}', [App\Http\Controllers\adminApiController::class, 'profileUsers']);
+
+        Route::get('/properti', [PropertiController::class, 'properti']);
+        Route::prefix('properti')->group(function () {
+            Route::post('search', [PropertiController::class, 'search']);
+            Route::post('search-sewa', [PropertiController::class, 'searchSewa']);
+            Route::post('filter', [PropertiController::class, 'filter']);
+            Route::post('filter-sewa', [PropertiController::class, 'filterSewa']);
+        });
+
+        Route::prefix('users')->group(function () {
+            Route::get('profile/{id}', [UserController::class, 'profileUsers']);
+            Route::post('{id}/verification', [UserController::class, 'verification']);
+        });
+
+        Route::post('/forgot-password', [adminApiController::class, 'forgotPass']);
+        Route::post('/forgot-password/{id}/verificate', [adminApiController::class, 'forgotPassVer']);
+        Route::post('/forgot-password/{id}/verificate/password', [adminApiController::class, 'forgotPassVerPass']);
+        Route::get('/informasi', [adminApiController::class, 'informasi']);
+        Route::get('/privasi', [adminApiController::class, 'privasi']);
+        Route::get('/syarat', [adminApiController::class, 'syarat']);
+        Route::get('/pesan-wa', [adminApiController::class, 'pesanWa']);
+        Route::get('/tentang', [adminApiController::class, 'tentang']);
+        Route::get('/faq', [adminApiController::class, 'faq']);
+        Route::get('/customer-services', [adminApiController::class, 'customerServices']);
+        Route::get('/faq/{id}/detail', [adminApiController::class, 'faq_detail']);
     });
 
     Route::middleware('auth:api')->group(function () {
-        Route::post('/users/password/ganti', 'App\Http\Controllers\adminApiController@gantiPassword');
-        Route::post('/voucher/insert', 'App\Http\Controllers\adminApiController@voucher');
-        Route::get('/logout', 'App\Http\Controllers\userApiController@logout');
-        Route::post('/users/request', [App\Http\Controllers\adminApiController::class, 'request']);
-        Route::post('/users/avatar', [App\Http\Controllers\adminApiController::class, 'avatar']);
-        Route::get('/profile', 'App\Http\Controllers\userApiController@profile');
-        Route::get('/properti/{id}/detail', [App\Http\Controllers\adminApiController::class, 'detailProperti']);
-        Route::post('/properti/{id}/edit', 'App\Http\Controllers\adminApiController@editProperti');
-        Route::get('/properti/{id}/delete', 'App\Http\Controllers\adminApiController@deleteProperti');
-        Route::get('/pengaturan/gambar/kategori', [App\Http\Controllers\adminApiController::class, 'gambar_kategori']);
-        Route::post('/properti/addfavorite', 'App\Http\Controllers\adminApiController@addFavorite');
-        Route::post('/properti/delfavorite', 'App\Http\Controllers\adminApiController@delFavorite');
-        Route::get('/properti/favorite/{id}', 'App\Http\Controllers\adminApiController@favorite');
-        Route::post('/properti/tambah', [App\Http\Controllers\adminApiController::class, 'tambahPropertiPost']);
-        Route::post('/kelola', 'App\Http\Controllers\adminApiController@kelola');
-        Route::post('/properti/findfavorite', 'App\Http\Controllers\adminApiController@findFav');
-        Route::post('/users/findfavorite', 'App\Http\Controllers\adminApiController@findUs');
-        Route::post('/users/profile', 'App\Http\Controllers\adminApiController@editProfile');
-        Route::post('/users/profile/edit', 'App\Http\Controllers\adminApiController@editProfilePost');
-        Route::post('/users/addfavorite', 'App\Http\Controllers\adminApiController@usersAddFavorite');
-        Route::post('/users/delfavorite', 'App\Http\Controllers\adminApiController@usersDelFavorite');
-        Route::get('/users/favorite/{id}', 'App\Http\Controllers\adminApiController@usersFavorite');
+        Route::post('/kelola', [PropertiController::class, 'kelola']);
+        Route::prefix('properti')->group(function () {
+            Route::get('{id}/detail', [PropertiController::class, 'detailProperti']);
+            Route::post('{id}/edit', [PropertiController::class, 'editProperti']);
+            Route::get('{id}/delete', [PropertiController::class, 'deleteProperti']);
+            Route::post('addfavorite', [PropertiController::class, 'addFavorite']);
+            Route::post('delfavorite', [PropertiController::class, 'delFavorite']);
+            Route::get('favorite/{id}', [PropertiController::class, 'favorite']);
+            Route::post('tambah', [PropertiController::class, 'tambahPropertiPost']);
+            Route::post('findfavorite', [PropertiController::class, 'findFav']);
+        });
+
+        Route::prefix('users')->group(function () {
+            Route::post('request', [UserController::class, 'request']);
+            Route::post('avatar', [UserController::class, 'avatar']);
+            Route::post('password/ganti', [UserController::class, 'gantiPassword']);
+            Route::post('findfavorite', [UserController::class, 'findUs']);
+            Route::post('profile', [UserController::class, 'editProfile']);
+            Route::post('profile/edit', [UserController::class, 'editProfilePost']);
+            Route::post('addfavorite', [UserController::class, 'usersAddFavorite']);
+            Route::post('delfavorite', [UserController::class, 'usersDelFavorite']);
+            Route::get('favorite/{id}', [UserController::class, 'usersFavorite']);
+        });
+
+        Route::post('/voucher/insert', [adminApiController::class, 'voucher']);
+        Route::get('/pengaturan/gambar/kategori', [adminApiController::class, 'gambar_kategori']);
+        Route::get('/logout', [userApiController::class, 'logout']);
+        Route::get('/profile', [userApiController::class, 'profile']);
     });

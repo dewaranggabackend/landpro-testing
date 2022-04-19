@@ -51,14 +51,14 @@ use Illuminate\Support\Facades\Route;
     Route::middleware('auth:api')->group(function () {
         Route::post('/kelola', [PropertiController::class, 'kelola']);
         Route::prefix('properti')->group(function () {
-            Route::get('{id}/detail', [PropertiController::class, 'detailProperti']);
-            Route::post('{id}/edit', [PropertiController::class, 'editProperti']);
-            Route::get('{id}/delete', [PropertiController::class, 'deleteProperti']);
             Route::post('addfavorite', [PropertiController::class, 'addFavorite']);
             Route::post('delfavorite', [PropertiController::class, 'delFavorite']);
             Route::get('favorite/{id}', [PropertiController::class, 'favorite']);
             Route::post('tambah', [PropertiController::class, 'tambahPropertiPost']);
             Route::post('findfavorite', [PropertiController::class, 'findFav']);
+            Route::get('{id}/detail', [PropertiController::class, 'detailProperti']);
+            Route::post('{id}/edit', [PropertiController::class, 'editProperti']);
+            Route::get('{id}/delete', [PropertiController::class, 'deleteProperti']);
         });
 
         Route::prefix('users')->group(function () {

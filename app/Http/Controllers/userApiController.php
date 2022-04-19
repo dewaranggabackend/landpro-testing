@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\BaseController;
 use Validator;
 use Auth;
 use Hash;
@@ -12,7 +11,6 @@ use GuzzleHttp\Client;
 
 class userApiController extends BaseController
 {
-
     public function profile (Request $request) {
         return $this->responseOk($request->user());
     }
@@ -40,7 +38,7 @@ class userApiController extends BaseController
 
         $kode = substr(str_shuffle(123456789), 0, 6);
         $client = new Client(['base_uri' => 'https://sendtalk-api.taptalk.io']);
-        $response = $client->request('POST', '/api/v1/message/send_whatsapp', [
+        $client->request('POST', '/api/v1/message/send_whatsapp', [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'API-Key' => '1811c01c2cf1baac13e5df4162fa8721d5f02bdbab2b3d722f639b7f7fb8bdfe'
@@ -59,7 +57,7 @@ class userApiController extends BaseController
             'password' => Hash::make($request->password),
             'isVerified' => 0,
             'activation_code' => $kode,
-        ]; 
+        ];
 
         if ($user = User::create($params)) {
             $token = $user->createToken('Token')->accessToken;
@@ -76,11 +74,11 @@ class userApiController extends BaseController
     }
 
     public function login (Request $request) {
-        if (!\App\Models\User::where('email', $request->email)->first()) {
+        if (!User::where('email', $request->email)->first()) {
             return $this->responseError('Login failed.', 403, 'Akun anda telah dibanned.');
         }
 
-        $data = \App\Models\User::where('email', $request->email)->first();
+        $data = User::where('email', $request->email)->first();
 
         if ($data->isVerified == 0) {
             return response()->json([
@@ -101,7 +99,7 @@ class userApiController extends BaseController
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
-            
+
             $response = [
                 'token' => $user->createToken('Token')->accessToken,
                 'nama' => $user->name,

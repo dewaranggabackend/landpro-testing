@@ -4,6 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Exports\PropertiExport;
 use App\Exports\UserExport;
+use App\Models\agenf;
+use App\Models\category;
+use App\Models\faq;
+use App\Models\favorite;
+use App\Models\informasi;
+use App\Models\message;
+use App\Models\privacy;
+use App\Models\properti;
+use App\Models\role;
+use App\Models\setting_kategori;
+use App\Models\syarat;
+use App\Models\tentang;
+use App\Models\User;
+use App\Models\voucher;
+use App\Models\voucher_usage;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -14,7 +29,7 @@ use Hash;
 class adminController extends Controller
 {
     public function category () {
-        $category = \App\Models\category::all();
+        $category = category::all();
         return view ('admin.category', compact('category'));
     }
 
@@ -31,16 +46,18 @@ class adminController extends Controller
     }
 
     public function requestOTPost (Request $request) {
-        $data = \App\Models\User::where('no_telp', $request->no_telp)->get();
+        $data = User::where('no_telp', $request->no_telp)->get();
         if (!isset($data[0])) {
             return redirect ('request-otp')->with('error', 'Maaf, nomor yang anda masukkan tidak terdaftar');
         }
+
         if ($data[0]->isVerified == 1) {
             return redirect ('login')->with('error', 'Maaf, akun anda telah terverifikasi');
         }
+
         $kode = substr(str_shuffle(123456789), 0, 6);
         $client = new Client(['base_uri' => 'https://sendtalk-api.taptalk.io']);
-        $response = $client->request('POST', '/api/v1/message/send_whatsapp', [
+        $client->request('POST', '/api/v1/message/send_whatsapp', [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'API-Key' => '1811c01c2cf1baac13e5df4162fa8721d5f02bdbab2b3d722f639b7f7fb8bdfe'
@@ -50,254 +67,270 @@ class adminController extends Controller
             'messageType' => "otp",
             'body' => "Masukkan kode 6 digit dibawah ini untuk verifikasi akun LANDPRO Anda.\n\n".$kode."\n\nJangan berikan kode ini kepada siapapun.",
         ]]);
-        \App\Models\User::where('no_telp', $request->no_telp)->update([
+
+        User::where('no_telp', $request->no_telp)->update([
             'activation_code' => $kode
         ]);
         return view ('auth.request-otp-validate', ['user' => $data[0]]);
     }
 
     public function requestOTPostVer (Request $request, $id) {
-        $data = \App\Models\User::find($id);
+        $data = User::find($id);
         if ($data->activation_code == $request->activation_code) {
-            \App\Models\User::where('id', $id)->update([
+            User::where('id', $id)->update([
                 'isVerified' => 1
             ]);
+
             return redirect ('login')->with('sukses', 'Akun anda berhasil diverifikasi');
         }
+
         return redirect('request-otp')->with('error', 'Maaf, kode OTP yang anda masukkan salah');
     }
 
     public function fresh () {
         $current = date('Y-m-d H:i:s');
-        $voucher = \App\Models\properti::where('exp', '<', $current);
+        $voucher = properti::where('exp', '<', $current);
         $voucher->update([
             'tayang' => 0,
         ]);
+
         return redirect ('properti/expire')->with('sukses', 'sukses! data properti berhasil diupdate');
     }
 
     public function properti () {
         $current = date('Y-m-d H:i:s');
-        $properties = \App\Models\properti::where('exp', '>', $current)->orWhere('exp', null)->paginate(20);
+        $properties = properti::where('exp', '>', $current)->orWhere('exp', null)->paginate(20);
         return view ('admin.properti', ['properties' => $properties]);
     }
 
     public function propertiExpire () {
         $current = date('Y-m-d H:i:s');
-        $properties = \App\Models\properti::where('exp', '<', $current)->paginate(20);
+        $properties = properti::where('exp', '<', $current)->paginate(20);
         return view ('admin.properti_expire', ['properties' => $properties]);
     }
 
     public function propertiStop ($id) {
-        $data = \App\Models\properti::find($id);
+        $data = properti::find($id);
         $data->update([
             'tayang' => 0,
             'exp' => null
         ]);
+
         return redirect('properti/expire')->with('sukses', 'sukses! penayangan berhasil di stop');
     }
 
     public function users () {
-        $user = \App\Models\User::paginate(20);
-        $role = \App\Models\role::all();
+        $user = User::paginate(20);
+        $role = role::all();
         return view ('admin.user', compact('user', 'role'));
     }
 
     public function banned ($id) {
-        $akun = \App\Models\User::find($id);
-        $akuns = \App\Models\agenf::where('agen_id', $id)->delete();
+        $akun = User::find($id);
+        agenf::where('agen_id', $id)->delete();
         $akun->delete();
 
         return redirect ('/users')->with('sukses', 'Sukses! akun berhasil di banned!');
     }
 
     public function viewban () {
-        $banned_users = \App\Models\User::onlyTrashed()->paginate(20);
+        $banned_users = User::onlyTrashed()->paginate(20);
         return view ('admin.ban', ['banned_users' => $banned_users]);
     }
 
     public function unban ($id) {
-        $user = \App\Models\User::withTrashed()->find($id);
+        $user = User::withTrashed()->find($id);
         $user->restore();
         return redirect ('/users')->with('sukses', 'Sukses! akun berhasil dipulihkan.');
     }
 
     public function upgrade ($id) {
-        $user = \App\Models\User::find($id);
+        $user = User::find($id);
+
         if ($user->role == 2) {
             return redirect ('/users')->with('gagal', 'Gagal! akun sudah menjadi agen.');
         } else {
-        $data = ['role' => 2];
-        $user->update($data);
-        return redirect ('/users')->with('sukses', 'Sukses! akun berhasil diupgrade.');
+            $data = ['role' => 2];
+            $user->update($data);
+
+            return redirect ('/users')->with('sukses', 'Sukses! akun berhasil diupgrade.');
         }
     }
 
     public function downgrade ($id) {
-        $user = \App\Models\User::find($id);
+        $user = User::find($id);
+
         if ($user->role == 3) {
             return redirect ('/users')->with('gagal', 'Gagal! akun sudah menjadi pencari.');
         } else {
-        $data = ['role' => 3];
-        $user->update($data);
-        return redirect ('/users')->with('sukses', 'Sukses! akun berhasil didowngrade.');
+            $data = ['role' => 3];
+            $user->update($data);
+
+            return redirect ('/users')->with('sukses', 'Sukses! akun berhasil didowngrade.');
         }
     }
 
     public function hapus ($id) {
-        $user = \App\Models\User::withTrashed()->find($id);
-        \App\Models\properti::where('user_id', $id)->delete();
-        \App\Models\favorite::where('users_id', $id)->delete();
-        \App\Models\agenf::where('user_id', $id)->orWhere('agen_id', $id)->delete();
-        \App\Models\voucher_usage::where('users_id', $id)->delete();
+        $user = User::withTrashed()->find($id);
+        properti::where('user_id', $id)->delete();
+        favorite::where('users_id', $id)->delete();
+        agenf::where('user_id', $id)->orWhere('agen_id', $id)->delete();
+        voucher_usage::where('users_id', $id)->delete();
+
         $user->forceDelete();
+
         return redirect ('/users/banned')->with('sukses', 'Sukses! akun berhasil dihapus permanen.');
     }
 
     public function off ($id) {
-        $properti = \App\Models\properti::find($id);
-        $propertis = \App\Models\favorite::where('properti_id', $id)->delete();
+        $properti = properti::find($id);
+        favorite::where('properti_id', $id)->delete();
         $properti->delete();
+
         return redirect ('properti')->with('sukses', 'Sukses! properti berhasil dipindahkan ke tong sampah.');
     }
 
     public function nonaktif () {
-        $properties = \App\Models\properti::onlyTrashed()->paginate(20);
+        $properties = properti::onlyTrashed()->paginate(20);
         return view ('admin.nonaktif', compact('properties'));
     }
 
     public function aktif ($id) {
-        $properties = \App\Models\properti::withTrashed()->find($id);
+        $properties = properti::withTrashed()->find($id);
         $properties->restore();
         return redirect ('/properti/nonaktif')->with('sukses', 'Sukses! properti berhasil dipulihkan kembali!');
     }
 
     public function hapusProperti ($id) {
-        $user = \App\Models\properti::withTrashed()->find($id);
+        $user = properti::withTrashed()->find($id);
         $user->forceDelete();
         return redirect ('/properti/nonaktif')->with('sukses', 'Sukses! properti berhasil dihapus permanen.');
     }
 
     public function privacy () {
-        $privacy = \App\Models\privacy::all();
+        $privacy = privacy::all();
         return view ('admin.privasi', ['privasi' => $privacy]);
     }
 
     public function privacyEdit ($id) {
-        $privacy = \App\Models\privacy::where("id", $id)->get();
+        $privacy = privacy::where("id", $id)->get();
         return view ('admin.editprivasi', ['privasi' => $privacy]);
     }
 
     public function privacyPost (Request $request, $id) {
-        $privacy = \App\Models\privacy::find($id);
-        $privacy->update(['judul' => $request->judul,
-                          'isi' => $request->isi]);
-        $privasi = \App\Models\privacy::all();
+        $privacy = privacy::find($id);
+        $privacy->update([
+            'judul' => $request->judul,
+            'isi' => $request->isi
+        ]);
+
+        privacy::all();
         return redirect ('privacy')->with('sukses', 'Sukses! kebijakan privasi berhasil diupdate.');
     }
 
     public function voucher () {
         $current = date('Y-m-d H:i:s');
-        $voucher = \App\Models\voucher::where('expiry_date', '>', $current)->orWhere('expiry_date', null)->paginate(20);
+        $voucher = voucher::where('expiry_date', '>', $current)->orWhere('expiry_date', null)->paginate(20);
+
         return view ('admin.voucher', compact('voucher'));
     }
 
     public function voucherKadaluwarsa () {
         $current = date('Y-m-d H:i:s');
-        $voucher = \App\Models\voucher::where('expiry_date', '<', $current)->paginate(20);
+        $voucher = voucher::where('expiry_date', '<', $current)->paginate(20);
         return view ('admin.voucher_kadaluwarsa', compact('voucher'));
     }
 
     public function voucherKadaluwarsaSearch (Request $request) {
         $current = date('Y-m-d H:i:s');
         $data = $request->voucher;
-        $voucher = \App\Models\voucher::where('expiry_date', '<', $current)->where('voucher', 'LIKE', '%'.$data.'%')->paginate(20);
+        $voucher = voucher::where('expiry_date', '<', $current)->where('voucher', 'LIKE', '%'.$data.'%')->paginate(20);
         return view ('admin.voucher_kadaluwarsa_search', compact('voucher'));
     }
 
     public function dashboard () {
         $current = date('Y-m-d H:i:s');
-        $user = \App\Models\User::count();
-        $banned_user = \App\Models\User::onlyTrashed()->count();
-        $properti = \App\Models\properti::where('exp', '>', $current)->orWhere('exp', null)->count();
-        $properti_rumah = \App\Models\properti::where('category_id', 1)->count();
-        $properti_resedensial = \App\Models\properti::where('category_id', 2)->count();
-        $properti_tanah = \App\Models\properti::where('category_id', 3)->count();
-        $properti_kantor = \App\Models\properti::where('category_id', 4)->count();
-        $properti_ruang = \App\Models\properti::where('category_id', 5)->count();
-        $properti_apartemen = \App\Models\properti::where('category_id', 6)->count();
-        $properti_ruko = \App\Models\properti::where('category_id', 7)->count();
-        $agen = \App\Models\User::where('role', 2)->count();
-        $pencari = \App\Models\User::where('role', 3)->count();
-        $off_properti = \App\Models\properti::onlyTrashed()->count();
-        $seven = \App\Models\User::where('created_at', '<=', Carbon::now()->subDays(7)->toDateTimeString())->count();
-        $six = \App\Models\User::where('created_at', '<=', Carbon::now()->subDays(6)->toDateTimeString())->count();
-        $five = \App\Models\User::where('created_at', '<=', Carbon::now()->subDays(5)->toDateTimeString())->count();
-        $four = \App\Models\User::where('created_at', '<=', Carbon::now()->subDays(4)->toDateTimeString())->count();
-        $three = \App\Models\User::where('created_at', '<=', Carbon::now()->subDays(3)->toDateTimeString())->count();
-        $two = \App\Models\User::where('created_at', '<=', Carbon::now()->subDays(2)->toDateTimeString())->count();
-        $one = \App\Models\User::where('created_at', '<=', Carbon::now()->subDays(1)->toDateTimeString())->count();
+        $user = User::count();
+        $banned_user = User::onlyTrashed()->count();
+        $properti = properti::where('exp', '>', $current)->orWhere('exp', null)->count();
+        $properti_rumah = properti::where('category_id', 1)->count();
+        $properti_resedensial = properti::where('category_id', 2)->count();
+        $properti_tanah = properti::where('category_id', 3)->count();
+        $properti_kantor = properti::where('category_id', 4)->count();
+        $properti_ruang = properti::where('category_id', 5)->count();
+        $properti_apartemen = properti::where('category_id', 6)->count();
+        $properti_ruko = properti::where('category_id', 7)->count();
+        $agen = User::where('role', 2)->count();
+        $pencari = User::where('role', 3)->count();
+        $off_properti = properti::onlyTrashed()->count();
+        $seven = User::where('created_at', '<=', Carbon::now()->subDays(7)->toDateTimeString())->count();
+        $six = User::where('created_at', '<=', Carbon::now()->subDays(6)->toDateTimeString())->count();
+        $five = User::where('created_at', '<=', Carbon::now()->subDays(5)->toDateTimeString())->count();
+        $four = User::where('created_at', '<=', Carbon::now()->subDays(4)->toDateTimeString())->count();
+        $three = User::where('created_at', '<=', Carbon::now()->subDays(3)->toDateTimeString())->count();
+        $two = User::where('created_at', '<=', Carbon::now()->subDays(2)->toDateTimeString())->count();
+        $one = User::where('created_at', '<=', Carbon::now()->subDays(1)->toDateTimeString())->count();
 
-        return view ('admin.dashboard', compact('user', 'banned_user', 'properti', 'off_properti', 'properti_rumah', 
+        return view ('admin.dashboard', compact('user', 'banned_user', 'properti', 'off_properti', 'properti_rumah',
         'properti_resedensial', 'properti_tanah', 'properti_kantor', 'properti_ruang', 'properti_apartemen', 'properti_ruko',
         'agen', 'pencari', 'seven', 'six', 'five', 'four', 'three', 'two', 'one'));
     }
 
     public function syarat () {
-        $syarat = \App\Models\syarat::all();
+        $syarat = syarat::all();
         return view ('admin.syarat', compact('syarat'));
     }
 
     public function editSyarat ($id) {
-        $syarat = \App\Models\syarat::where("id", $id)->get();
+        $syarat = syarat::where("id", $id)->get();
         return view ('admin.editsyarat', ['syarat' => $syarat]);
     }
 
     public function syaratPost (Request $request, $id) {
-        $syarat = \App\Models\syarat::find($id);
+        $syarat = syarat::find($id);
         $syarat->update($request->all());
         return redirect ('syarat')->with('sukses', 'Sukses! syarat penggunaan berhasil diupdate.');
     }
 
     public function tentang () {
-        $tentang = \App\Models\tentang::all();
+        $tentang = tentang::all();
         return view ('admin.tentang', compact('tentang'));
     }
 
     public function tentangEdit ($id) {
-        $tentang = \App\Models\tentang::where("id",$id)->get();
+        $tentang = tentang::where("id",$id)->get();
         return view ('admin.edit_tentang', compact('tentang'));
     }
 
     public function tentangPost (Request $request, $id) {
-        $tentang = \App\Models\tentang::find($id);
+        $tentang = tentang::find($id);
         $tentang->update($request->all());
         return redirect ('tentang')->with('sukses', 'Sukses! informasi berhasil diupdate.');
     }
 
     public function faq () {
-        $faq = \App\Models\faq::paginate(20);
+        $faq = faq::paginate(20);
         return view ('admin.faq', compact ('faq'));
     }
 
     public function faqDetail ($id) {
-        $faq = \App\Models\faq::where("id",$id)->get();
+        $faq = faq::where("id",$id)->get();
         return view ('admin.faq_details', compact('faq'));
     }
 
     public function faqEdit ($id) {
-        $faq = \App\Models\faq::where("id",$id)->get();
+        $faq = faq::where("id",$id)->get();
         return view ('admin.editfaq', compact('faq'));
     }
 
     public function faqPost (Request $request, $id) {
-        $faq = \App\Models\faq::find($id);
+        $faq = faq::find($id);
         $faq->update($request->all());
         return redirect ('faq')->with('sukses', 'Sukses! faq berhasil diupdate.');
     }
 
     public function hapusFaq ($id) {
-        $faq = \App\Models\faq::find($id);
+        $faq = faq::find($id);
         $faq->delete();
         return redirect ('faq')->with('sukses', 'Sukses! faq berhasil dihapus.');
     }
@@ -313,7 +346,7 @@ class adminController extends Controller
             return redirect ('/faq/tambah')->with('gagal', 'Gagal! maaf isi faq tidak boleh kosong.');
         }
 
-        \App\Models\faq::create($request->all());
+        faq::create($request->all());
         return redirect ('faq')->with('sukses', 'Sukses! faq berhasil dibuat.');
     }
 
@@ -326,7 +359,7 @@ class adminController extends Controller
             return redirect ('voucher')->with('gagal', 'Gagal! maaf kode voucher tidak boleh lebih dari 15 karakter.');
         } else if (strpos($request->voucher, " ") !== false) {
             return redirect ('voucher')->with('gagal', 'Gagal! maaf kode voucher tidak boleh mengandung spasi.');
-        } else if (\App\Models\voucher::where('voucher', $request->voucher)->exists()) {
+        } else if (voucher::where('voucher', $request->voucher)->exists()) {
             return redirect ('voucher')->with('gagal', 'Gagal! maaf kode voucher sudah pernah dibuat.');
         } else if (!isset($request->voucher)){
             return redirect ('voucher')->with('gagal', 'Maaf! voucher tidak boleh kosong');
@@ -334,76 +367,82 @@ class adminController extends Controller
 
         if ($request->continuous == 0) {
             if ($request->durasi == 1) {
-               
-                \App\Models\voucher::create(
+                voucher::create(
                     array_merge($request->all(), ['expiry_date' => null])
                 );
-                return redirect ('voucher')->with('sukses', 'Sukses! voucher berhasil dibuat.'); 
+
+                return redirect ('voucher')->with('sukses', 'Sukses! voucher berhasil dibuat.');
             }
-    
+
             if ($request->durasi == 2) {
-               
-                \App\Models\voucher::create(
+                voucher::create(
                     array_merge($request->all(), ['expiry_date' => null])
                 );
-                return redirect ('voucher')->with('sukses', 'Sukses! voucher berhasil dibuat.'); 
+
+                return redirect ('voucher')->with('sukses', 'Sukses! voucher berhasil dibuat.');
             }
-    
+
             if ($request->durasi == 3) {
-               
-                \App\Models\voucher::create(
+                voucher::create(
                     array_merge($request->all(), ['expiry_date' => null])
                 );
-                return redirect ('voucher')->with('sukses', 'Sukses! voucher berhasil dibuat.'); 
+
+                return redirect ('voucher')->with('sukses', 'Sukses! voucher berhasil dibuat.');
             }
         }
 
         if ($request->continuous == 1) {
             if ($request->durasi == 1) {
                 $date = date('Y-m-d H:i:s', strtotime('+1 month'));
-                \App\Models\voucher::create(
+                voucher::create(
                     array_merge($request->all(), ['expiry_date' => $date])
                 );
-                return redirect ('voucher')->with('sukses', 'Sukses! voucher berhasil dibuat.'); 
+
+                return redirect ('voucher')->with('sukses', 'Sukses! voucher berhasil dibuat.');
             }
-    
+
             if ($request->durasi == 2) {
                 $date = date('Y-m-d H:i:s', strtotime('+3 months'));
-                \App\Models\voucher::create(
+                voucher::create(
                     array_merge($request->all(), ['expiry_date' => $date])
                 );
-                return redirect ('voucher')->with('sukses', 'Sukses! voucher berhasil dibuat.'); 
+
+                return redirect ('voucher')->with('sukses', 'Sukses! voucher berhasil dibuat.');
             }
-    
+
             if ($request->durasi == 3) {
                 $date = date('Y-m-d H:i:s', strtotime('+6 months'));
-                \App\Models\voucher::create(
+                voucher::create(
                     array_merge($request->all(), ['expiry_date' => $date])
                 );
-                return redirect ('voucher')->with('sukses', 'Sukses! voucher berhasil dibuat.'); 
+
+                return redirect ('voucher')->with('sukses', 'Sukses! voucher berhasil dibuat.');
             }
         }
-        
+
         if ($request->continuous == 2) {
             if ($request->durasi == 1) {
-                \App\Models\voucher::create(
+                voucher::create(
                     array_merge($request->all(), ['expiry_date' => null])
                 );
-                return redirect ('voucher')->with('sukses', 'Sukses! voucher berhasil dibuat.'); 
+
+                return redirect ('voucher')->with('sukses', 'Sukses! voucher berhasil dibuat.');
             }
-    
+
             if ($request->durasi == 2) {
-                \App\Models\voucher::create(
+                voucher::create(
                     array_merge($request->all(), ['expiry_date' => null])
                 );
-                return redirect ('voucher')->with('sukses', 'Sukses! voucher berhasil dibuat.'); 
+
+                return redirect ('voucher')->with('sukses', 'Sukses! voucher berhasil dibuat.');
             }
-    
+
             if ($request->durasi == 3) {
-                \App\Models\voucher::create(
+                voucher::create(
                     array_merge($request->all(), ['expiry_date' => null])
                 );
-                return redirect ('voucher')->with('sukses', 'Sukses! voucher berhasil dibuat.'); 
+
+                return redirect ('voucher')->with('sukses', 'Sukses! voucher berhasil dibuat.');
             }
         }
 
@@ -411,16 +450,16 @@ class adminController extends Controller
     }
 
     public function hapusVoucher ($id) {
-        $voucher = \App\Models\voucher::find($id);
-        $vouchers = \App\Models\voucher_usage::where('voucher', $voucher->voucher)->delete();
+        $voucher = voucher::find($id);
+        voucher_usage::where('voucher', $voucher->voucher)->delete();
         $voucher->delete();
         return redirect ('voucher')->with('sukses', 'Sukses! voucher berhasil dihapus.');
     }
 
     public function voucherKadaluwarsaHapus ($id) {
         $current = date('Y-m-d H:i:s');
-        $voucher = \App\Models\voucher::where('expiry_date', '<', $current)->find($id);
-        $vouchers = \App\Models\voucher_usage::where('voucher', $voucher->voucher)->delete();
+        $voucher = voucher::where('expiry_date', '<', $current)->find($id);
+        voucher_usage::where('voucher', $voucher->voucher)->delete();
         $voucher->delete();
         return redirect ('voucher/kadaluwarsa')->with('sukses', 'Sukses! voucher berhasil dihapus.');
     }
@@ -434,37 +473,38 @@ class adminController extends Controller
     }
 
     public function detailProperti ($id) {
-        $properti = \App\Models\properti::where('id', $id)->get();
+        $properti = properti::where('id', $id)->get();
         return view ('admin.detail_properti', compact('properti'));
     }
 
     public function setting_kategori () {
-        $gambar = \App\Models\setting_kategori::all();
-        $pesan = \App\Models\message::all();
+        $gambar = setting_kategori::all();
+        $pesan = message::all();
         return view ('admin.pengaturan', compact('gambar', 'pesan'));
     }
 
     public function ubah_gambar_kategori ($id) {
-        $gambar = \App\Models\setting_kategori::where('id', $id)->get();
+        $gambar = setting_kategori::where('id', $id)->get();
         return view ('admin.edit_gambar_pengaturan', compact('gambar'));
     }
 
     public function ubah_pesan_kategori ($id) {
-        $pesan = \App\Models\message::where('id', $id)->get();
+        $pesan = message::where('id', $id)->get();
         return view ('admin.edit_pesan_pengaturan', compact('pesan'));
     }
 
     public function ubah_pesan_kategoriPost (Request $request, $id) {
-        $data = \App\Models\message::where('id', $id);
+        $data = message::where('id', $id);
         $data->update([
             'pesan' => $request->pesan,
             'harga' => $request->harga
         ]);
+
         return redirect('pengaturan')->with('sukses', 'Berhasil! pesan WhatsApp berhasil dirubah');
     }
 
     public function ubah_gambar_kategoriPost (Request $request, $id) {
-        $gambar = \App\Models\setting_kategori::find($id);
+        $gambar = setting_kategori::find($id);
         $gambar_1 = $request->gambar;
         $gambar_1_final = time().$gambar_1->getClientOriginalName();
         $gambar->update([
@@ -488,7 +528,7 @@ class adminController extends Controller
     public function setujuRequest ($id) {
         $data = \App\Models\request::find($id);
         $user_id = $data->users_id;
-        $request = \App\Models\User::find($user_id);
+        $request = User::find($user_id);
         $request->update([
             'role' => 2,
         ]);
@@ -499,25 +539,25 @@ class adminController extends Controller
     public function searchVoucher (Request $request) {
         $current = date('Y-m-d H:i:s');
         $data = $request->voucher;
-        $result = \App\Models\voucher::where('expiry_date', '>', $current)->where('voucher', 'LIKE', '%'.$data.'%')->orWhere('expiry_date', null)->where('voucher', 'LIKE', '%'.$data.'%')->get();
+        $result = voucher::where('expiry_date', '>', $current)->where('voucher', 'LIKE', '%'.$data.'%')->orWhere('expiry_date', null)->where('voucher', 'LIKE', '%'.$data.'%')->get();
         return view ('admin.voucher_search', compact ('result'));
     }
 
     public function searchFaq (Request $request) {
         $data = $request->cari;
-        $result = \App\Models\faq::where('judul', 'LIKE', '%'.$data.'%')->orWhere('isi', 'LIKE', '%'.$data.'%')->get();
+        $result = faq::where('judul', 'LIKE', '%'.$data.'%')->orWhere('isi', 'LIKE', '%'.$data.'%')->get();
         return view ('admin.faq_search', compact ('result'));
     }
 
     public function usersSearch (Request $request) {
         $data = $request->cari;
-        $result = \App\Models\User::where('name', 'LIKE', '%'.$data.'%')->orWhere('email', 'LIKE', '%'.$data.'%')->orWhere('no_telp', 'LIKE', '%'.$data.'%')->get();
+        $result = User::where('name', 'LIKE', '%'.$data.'%')->orWhere('email', 'LIKE', '%'.$data.'%')->orWhere('no_telp', 'LIKE', '%'.$data.'%')->get();
         return view ('admin.user_search', compact('result'));
     }
 
     public function bannedSearch (Request $request) {
         $data = $request->cari;
-        $result = \App\Models\User::onlyTrashed()->where('id', $data)->paginate(20);
+        $result = User::onlyTrashed()->where('id', $data)->paginate(20);
         return view ('admin.ban_search', compact('result'));
     }
 
@@ -533,23 +573,23 @@ class adminController extends Controller
 
     public function searchProperti (Request $request) {
         $data = $request->cari;
-        $result = \App\Models\properti::where('nama', 'LIKE', '%'.$data.'%')->orWhere('deskripsi', 'LIKE', '%'.$data.'%')->orWhere('provinsi', 'LIKE', '%'.$data.'%')->orWhere('kabupaten', 'LIKE', '%'.$data.'%')->orWhere('kecamatan', 'LIKE', '%'.$data.'%')->get();
+        $result = properti::where('nama', 'LIKE', '%'.$data.'%')->orWhere('deskripsi', 'LIKE', '%'.$data.'%')->orWhere('provinsi', 'LIKE', '%'.$data.'%')->orWhere('kabupaten', 'LIKE', '%'.$data.'%')->orWhere('kecamatan', 'LIKE', '%'.$data.'%')->get();
         return view ('admin.properti_search', compact('result'));
     }
 
     public function searchPropertiTrashed (Request $request) {
         $data = $request->cari;
-        $result = \App\Models\properti::onlyTrashed()->where('id', $data)->paginate(20);
+        $result = properti::onlyTrashed()->where('id', $data)->paginate(20);
         return view ('admin.nonaktif_search', compact('result'));
     }
 
     public function informasi () {
-        $informasi = \App\Models\informasi::paginate(20);
+        $informasi = informasi::paginate(20);
         return view ('admin.informasi', compact ('informasi'));
     }
 
     public function detailInformasi ($id) {
-        $informasi = \App\Models\informasi::where('id',$id)->get();
+        $informasi = informasi::where('id',$id)->get();
         return view ('admin.detail_informasi', compact('informasi'));
     }
 
@@ -561,7 +601,7 @@ class adminController extends Controller
         $gambar_1 = $request->file('gambar');
         $gambar_1_final = time().$gambar_1->getClientOriginalName();
 
-        \App\Models\informasi::create([
+        informasi::create([
             'judul' => $request->judul,
             'isi' => $request->isi,
             'gambar' => 'public/uploads/informasi/'.$gambar_1_final
@@ -572,18 +612,18 @@ class adminController extends Controller
     }
 
     public function hapusInformasi ($id) {
-        $data = \App\Models\informasi::find($id);
+        $data = informasi::find($id);
         $data->delete();
         return redirect ('informasi')->with('sukses', 'sukses! informasi berhasil dihapus');
     }
 
     public function editInformasi ($id) {
-        $data = \App\Models\informasi::where('id', $id)->get();
+        $data = informasi::where('id', $id)->get();
         return view ('admin.edit_informasi', compact('data'));
     }
 
     public function editInformasiPost (Request $request, $id) {
-        $data = \App\Models\informasi::find($id);
+        $data = informasi::find($id);
         $gambar_1 = $request->file('gambar');
         $gambar_1_final = time().$gambar_1->getClientOriginalName();
 
@@ -599,29 +639,31 @@ class adminController extends Controller
 
     public function searchInformasi (Request $request) {
         $data = $request->cari;
-        $info = \App\Models\informasi::where('judul', 'LIKE', '%'.$data.'%')->orWhere('isi', 'LIKE', '%'.$data.'%')->paginate(20);
+        $info = informasi::where('judul', 'LIKE', '%'.$data.'%')->orWhere('isi', 'LIKE', '%'.$data.'%')->paginate(20);
         return view ('admin.informasi_search', compact('info'));
     }
 
     public function voucherKadaluwarsaFresh () {
         $current = date('Y-m-d H:i:s');
-        $voucher = \App\Models\voucher::where('expiry_date', '<', $current);
-        $voucherz = \App\Models\voucher::where('expiry_date', '<', $current)->first();
-        $vouchers = \App\Models\voucher_usage::where('voucher', $voucherz->voucher)->delete();
+        $voucher = voucher::where('expiry_date', '<', $current);
+        $voucherz = voucher::where('expiry_date', '<', $current)->first();
+        voucher_usage::where('voucher', $voucherz->voucher)->delete();
         $voucher->delete();
         return redirect ('voucher/kadaluwarsa')->with('sukses', 'sukses! data voucher berhasil diupdate');
     }
 
     public function verificationOTP (Request $request, $id) {
-        $user = \App\Models\User::find($id);
+        $user = User::find($id);
         $code_1 = "$user->activation_code";
         $aktivasi = "$request->activation_code";
-        if ($code_1 != $aktivasi) { 
+        if ($code_1 != $aktivasi) {
             return redirect('register');
         }
-        \App\Models\User::find($id)->update([
+
+        User::find($id)->update([
         'isVerified' => 1
         ]);
+
         return redirect ('login')->with('sukses', 'Anda berhasil terdaftar');
     }
 
@@ -630,13 +672,15 @@ class adminController extends Controller
     }
 
     public function lupaPasswordPost (Request $request) {
-        $user = \App\Models\User::where('no_telp', $request->no_telp)->get();
-        if(!isset($user[0])) {
+        $user = User::where('no_telp', $request->no_telp)->get();
+
+        if (!isset($user[0])) {
             return redirect ('register');
         }
+
         $kode = substr(str_shuffle(123456789), 0, 6);
         $client = new Client(['base_uri' => 'https://sendtalk-api.taptalk.io']);
-        $response = $client->request('POST', '/api/v1/message/send_whatsapp', [
+        $client->request('POST', '/api/v1/message/send_whatsapp', [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'API-Key' => '1811c01c2cf1baac13e5df4162fa8721d5f02bdbab2b3d722f639b7f7fb8bdfe'
@@ -646,20 +690,23 @@ class adminController extends Controller
             'messageType' => "otp",
             'body' => "Masukkan kode dibawah ini untuk mengatur ulang kata sandi akun LANDPRO Anda.\n\n".$kode."\n\nJangan berikan kode ini kepada siapapun.",
         ]]);
-        \App\Models\User::where('no_telp', $request->no_telp)->update([
+
+        User::where('no_telp', $request->no_telp)->update([
             'activation_code' => $kode
         ]);
+
         return view ('auth.forgot_password_change', ['user' => $user[0]]);
     }
 
     public function lupaPasswordSet (Request $request, $id) {
-        $user = \App\Models\User::find($id);
+        $user = User::find($id);
         $code_1 = "$user->activation_code";
         $aktivasi = "$request->activation_code";
-        if ($code_1 != $aktivasi) { 
+        if ($code_1 != $aktivasi) {
             return redirect('register')->with('error', 'Maaf, kode OTP yang anda masukkan salah');
         }
-        $user = \App\Models\User::find($id);
+
+        $user = User::find($id);
         return view ('auth.forgot_password_set', compact('user'));
     }
 
@@ -667,16 +714,19 @@ class adminController extends Controller
         $validator = Validator::make($request->all(), [
             'password' => ['required', 'string', 'min:8'],
         ]);
+
         if ($validator->fails()) {
             return redirect('login')->with('error', 'Maaf, password yang anda masukkan tidak valid. (ket: minimal 8 karakter)');
         }
-        $user = \App\Models\User::find($id);
+
+        $user = User::find($id);
         $user->update([
             'password' => Hash::make($request->password)
         ]);
+
         return redirect('login')->with('sukses', 'Sukses! password berhasil diubah');
     }
-    
+
     public function tambahPropertiPost (Request $request) {
             $cek_kategori = "$request->category_id";
             if ($cek_kategori == 1) {
@@ -687,15 +737,16 @@ class adminController extends Controller
                 $gambar_3 = $request->foto_tampak_ruangan;
                 $gambar_3_final = time().$gambar_3->getClientOriginalName();
                 $foto_tampak_lain = array ();
-                if($files=$request->file('foto_tampak_lain')) {
-                    foreach($files as $file){
+                if ($files = $request->file('foto_tampak_lain')) {
+                    foreach ($files as $file) {
                         $name=time().$file->getClientOriginalName();
                         $file->move('public/uploads/properti/rumah/', $name);
                         $foto_tampak_lain[]=$name;
                     }
                 }
+
                 $ftl = 'public/uploads/properti/rumah/'.implode('|public/uploads/properti/rumah/', $foto_tampak_lain);
-                $post = \App\Models\properti::create([
+                properti::create([
                     'user_id' => $request->user_id,
                     'category_id' => $request->category_id,
                     'jenis' => $request->jenis,
@@ -737,11 +788,14 @@ class adminController extends Controller
                     'tayang' => $request->tayang,
                     'pet_allowed' => $request->pet_allowed,
                 ]);
+
                 $gambar_1->move('public/uploads/properti/rumah/', $gambar_1_final);
                 $gambar_2->move('public/uploads/properti/rumah/', $gambar_2_final);
                 $gambar_3->move('public/uploads/properti/rumah/', $gambar_3_final);
+
                 return redirect ('/properti')->with('sukses', 'properti rumah berhasil ditambahkan');
             }
+
             if ($cek_kategori == 2) {
                 $gambar_1 = $request->foto_tampak_depan;
                 $gambar_1_final = time().$gambar_1->getClientOriginalName();
@@ -750,15 +804,16 @@ class adminController extends Controller
                 $gambar_3 = $request->foto_tampak_ruangan;
                 $gambar_3_final = time().$gambar_3->getClientOriginalName();
                 $foto_tampak_lain = array ();
-                if($files=$request->file('foto_tampak_lain')){
-                    foreach($files as $file){
+                if ($files = $request->file('foto_tampak_lain')) {
+                    foreach ($files as $file) {
                         $name=time().$file->getClientOriginalName();
                         $file->move('public/uploads/properti/resedensial/', $name);
                         $foto_tampak_lain[]=$name;
                     }
                 }
+
                 $ftl = 'public/uploads/properti/resedensial/'.implode('|public/uploads/properti/resedensial/', $foto_tampak_lain);
-                $post = \App\Models\properti::create([
+                properti::create([
                     'user_id' => $request->user_id,
                     'category_id' => $request->category_id,
                     'jenis' => $request->jenis,
@@ -800,11 +855,14 @@ class adminController extends Controller
                     'tayang' => $request->tayang,
                     'pet_allowed' => $request->pet_allowed,
                 ]);
+
                 $gambar_1->move('public/uploads/properti/resedensial/', $gambar_1_final);
                 $gambar_2->move('public/uploads/properti/resedensial/', $gambar_2_final);
                 $gambar_3->move('public/uploads/properti/resedensial/', $gambar_3_final);
+
                 return redirect ('/properti')->with('sukses', 'properti resedensial berhasil ditambahkan');
             }
+
             if ($cek_kategori == 3) {
                     $gambar_1 = $request->foto_tampak_depan;
                     $gambar_1_final = time().$gambar_1->getClientOriginalName();
@@ -813,15 +871,17 @@ class adminController extends Controller
                     $gambar_3 = $request->foto_tampak_ruangan;
                     $gambar_3_final = time().$gambar_3->getClientOriginalName();
                     $foto_tampak_lain = array ();
-                    if($files=$request->file('foto_tampak_lain')){
-                        foreach($files as $file){
+
+                    if ($files = $request->file('foto_tampak_lain')) {
+                        foreach ($files as $file) {
                             $name=time().$file->getClientOriginalName();
                             $file->move('public/uploads/properti/tanah/', $name);
                             $foto_tampak_lain[]=$name;
                         }
                     }
+
                     $ftl = 'public/uploads/properti/tanah/'.implode('|public/uploads/properti/tanah/', $foto_tampak_lain);
-                    $post = \App\Models\properti::create([
+                    properti::create([
                         'user_id' => $request->user_id,
                         'category_id' => $request->category_id,
                         'jenis' => $request->jenis,
@@ -847,11 +907,14 @@ class adminController extends Controller
                         'kontak' => $request->kontak,
                         'tayang' => $request->tayang
                     ]);
+
                     $gambar_1->move('public/uploads/properti/tanah/', $gambar_1_final);
                     $gambar_2->move('public/uploads/properti/tanah/', $gambar_2_final);
                     $gambar_3->move('public/uploads/properti/tanah/', $gambar_3_final);
+
                     return redirect ('/properti')->with('sukses', 'properti tanah berhasil ditambahkan');
                 }
+
                 if ($cek_kategori == 4) {
                     $gambar_1 = $request->foto_tampak_depan;
                     $gambar_1_final = time().$gambar_1->getClientOriginalName();
@@ -860,15 +923,17 @@ class adminController extends Controller
                     $gambar_3 = $request->foto_tampak_ruangan;
                     $gambar_3_final = time().$gambar_3->getClientOriginalName();
                     $foto_tampak_lain = array ();
-                    if($files=$request->file('foto_tampak_lain')){
-                        foreach($files as $file){
+
+                    if ($files = $request->file('foto_tampak_lain')) {
+                        foreach ($files as $file) {
                             $name=time().$file->getClientOriginalName();
                             $file->move('public/uploads/properti/kantor/', $name);
                             $foto_tampak_lain[]=$name;
                         }
                     }
+
                     $ftl = 'public/uploads/properti/kantor/'.implode('|public/uploads/properti/kantor/', $foto_tampak_lain);
-                    $post = \App\Models\properti::create([
+                    properti::create([
                         'user_id' => $request->user_id,
                         'category_id' => $request->category_id,
                         'jenis' => $request->jenis,
@@ -910,11 +975,14 @@ class adminController extends Controller
                         'tayang' => $request->tayang,
                         'pet_allowed' => $request->pet_allowed,
                     ]);
+
                     $gambar_1->move('public/uploads/properti/kantor/', $gambar_1_final);
                     $gambar_2->move('public/uploads/properti/kantor/', $gambar_2_final);
                     $gambar_3->move('public/uploads/properti/kantor/', $gambar_3_final);
+
                     return redirect ('/properti')->with('sukses', 'properti kantor berhasil ditambahkan');
                 }
+
                 if ($cek_kategori == 5) {
                     $gambar_1 = $request->foto_tampak_depan;
                     $gambar_1_final = time().$gambar_1->getClientOriginalName();
@@ -923,15 +991,17 @@ class adminController extends Controller
                     $gambar_3 = $request->foto_tampak_ruangan;
                     $gambar_3_final = time().$gambar_3->getClientOriginalName();
                     $foto_tampak_lain = array ();
-                    if($files=$request->file('foto_tampak_lain')){
-                        foreach($files as $file){
+
+                    if ($files = $request->file('foto_tampak_lain')) {
+                        foreach ($files as $file) {
                             $name=time().$file->getClientOriginalName();
                             $file->move('public/uploads/properti/ruang/', $name);
                             $foto_tampak_lain[]=$name;
                         }
                     }
+
                     $ftl = 'public/uploads/properti/ruang/'.implode('|public/uploads/properti/ruang/', $foto_tampak_lain);
-                    $post = \App\Models\properti::create([
+                    properti::create([
                         'user_id' => $request->user_id,
                         'category_id' => $request->category_id,
                         'jenis' => $request->jenis,
@@ -973,11 +1043,14 @@ class adminController extends Controller
                         'tayang' => $request->tayang,
                         'pet_allowed' => $request->pet_allowed,
                     ]);
+
                     $gambar_1->move('public/uploads/properti/ruang/', $gambar_1_final);
                     $gambar_2->move('public/uploads/properti/ruang/', $gambar_2_final);
                     $gambar_3->move('public/uploads/properti/ruang/', $gambar_3_final);
+
                     return redirect ('/properti')->with('sukses', 'properti ruang berhasil ditambahkan');
                 }
+
                 if ($cek_kategori == 6) {
                     $gambar_1 = $request->foto_tampak_depan;
                     $gambar_1_final = time().$gambar_1->getClientOriginalName();
@@ -986,15 +1059,17 @@ class adminController extends Controller
                     $gambar_3 = $request->foto_tampak_ruangan;
                     $gambar_3_final = time().$gambar_3->getClientOriginalName();
                     $foto_tampak_lain = array ();
-                    if($files=$request->file('foto_tampak_lain')){
-                        foreach($files as $file){
+
+                    if ($files = $request->file('foto_tampak_lain')) {
+                        foreach ($files as $file) {
                             $name=time().$file->getClientOriginalName();
                             $file->move('public/uploads/properti/apartemen/', $name);
                             $foto_tampak_lain[]=$name;
                         }
                     }
+
                     $ftl = 'public/uploads/properti/apartemen/'.implode('|public/uploads/properti/apartemen/', $foto_tampak_lain);
-                    $post = \App\Models\properti::create([
+                    properti::create([
                         'user_id' => $request->user_id,
                         'category_id' => $request->category_id,
                         'jenis' => $request->jenis,
@@ -1036,11 +1111,14 @@ class adminController extends Controller
                         'tayang' => $request->tayang,
                         'pet_allowed' => $request->pet_allowed,
                     ]);
+
                     $gambar_1->move('public/uploads/properti/apartemen/', $gambar_1_final);
                     $gambar_2->move('public/uploads/properti/apartemen/', $gambar_2_final);
                     $gambar_3->move('public/uploads/properti/apartemen/', $gambar_3_final);
+
                     return redirect ('/properti')->with('sukses', 'properti apartemen berhasil ditambahkan');
                 }
+
                 if ($cek_kategori == 7) {
                     $gambar_1 = $request->foto_tampak_depan;
                     $gambar_1_final = time().$gambar_1->getClientOriginalName();
@@ -1049,15 +1127,17 @@ class adminController extends Controller
                     $gambar_3 = $request->foto_tampak_ruangan;
                     $gambar_3_final = time().$gambar_3->getClientOriginalName();
                     $foto_tampak_lain = array ();
-                    if($files=$request->file('foto_tampak_lain')){
-                        foreach($files as $file){
+
+                    if ($files = $request->file('foto_tampak_lain')) {
+                        foreach ($files as $file) {
                             $name=time().$file->getClientOriginalName();
                             $file->move('public/uploads/properti/ruko/', $name);
                             $foto_tampak_lain[]=$name;
                         }
                     }
+
                     $ftl = 'public/uploads/properti/ruko/'.implode('|public/uploads/properti/ruko/', $foto_tampak_lain);
-                    $post = \App\Models\properti::create([
+                    properti::create([
                         'user_id' => $request->user_id,
                         'category_id' => $request->category_id,
                         'jenis' => $request->jenis,
@@ -1099,9 +1179,11 @@ class adminController extends Controller
                         'tayang' => $request->tayang,
                         'pet_allowed' => $request->pet_allowed,
                     ]);
+
                     $gambar_1->move('public/uploads/properti/ruko/', $gambar_1_final);
                     $gambar_2->move('public/uploads/properti/ruko/', $gambar_2_final);
                     $gambar_3->move('public/uploads/properti/ruko/', $gambar_3_final);
+
                     return redirect ('/properti')->with('sukses', 'properti ruko berhasil ditambahkan');
                 }
     }

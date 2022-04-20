@@ -77,13 +77,13 @@ Route::group(['middleware' => ['auth', 'CekRole:1']], function () {
 
     Route::get('/informasi', [InformasiController::class, 'informasi']);
     Route::prefix('informasi')->group(function () {
-        Route::get('/informasi/search', [InformasiController::class, 'searchInformasi']);
-        Route::get('/informasi/tambah', [InformasiController::class, 'tambahInformasi']);
-        Route::post('/informasi/tambah', [InformasiController::class, 'tambahInformasiPost']);
-        Route::get('/informasi/{id}/hapus', [InformasiController::class, 'hapusInformasi']);
-        Route::get('/informasi/{id}/edit', [InformasiController::class, 'editInformasi']);
-        Route::post('/informasi/{id}/edit', [InformasiController::class, 'editInformasiPost']);
-        Route::get('/informasi/{id}', [InformasiController::class, 'detailInformasi']);
+        Route::get('search', [InformasiController::class, 'searchInformasi']);
+        Route::get('tambah', [InformasiController::class, 'tambahInformasi']);
+        Route::post('tambah', [InformasiController::class, 'tambahInformasiPost']);
+        Route::get('{id}/hapus', [InformasiController::class, 'hapusInformasi']);
+        Route::get('{id}/edit', [InformasiController::class, 'editInformasi']);
+        Route::post('{id}/edit', [InformasiController::class, 'editInformasiPost']);
+        Route::get('{id}', [InformasiController::class, 'detailInformasi']);
     });
 
     Route::get('/voucher', [VoucherController::class, 'voucher']);

@@ -27,7 +27,11 @@ class VoucherController extends Controller
         $current = date('Y-m-d H:i:s');
         $voucher = voucher::where('expiry_date', '<', $current);
         $voucherz = voucher::where('expiry_date', '<', $current)->first();
-        voucher_usage::where('voucher', $voucherz->voucher)->delete();
+
+        if ($voucherz != null) {
+            voucher_usage::where('voucher', $voucherz->voucher)->delete();
+        }
+
         $voucher->delete();
         return redirect ('voucher/kadaluwarsa')->with('sukses', 'sukses! data voucher berhasil diupdate');
     }

@@ -51,14 +51,14 @@ Request
     <tr>
         <td><?= $count = $count + 1;?></td>
         <td>{{$faqs->id}}</td>
-        <td><?php 
+        <td><?php
             if (isset($faqs->nama->name)) {
                 echo $faqs->nama->name;
             } else {
                 echo "User dihapus";
             }
         ?></td>
-    <!-- <td>{{$faqs->nama->name}}</td> -->
+{{--    <!-- <td>{{$faqs->nama->name}}</td> -->--}}
     <td>{{$faqs->created_at}}</td>
         <td>
         <?php

@@ -15,7 +15,7 @@ Properti Aktif
 @section('body')
 <div class="card mb-4">
 <div class="card-body">
-<a href="/properti/tambah"><button type="button" class="btn btn-success" data-toggle="tooltip" title="Tambah Properti Eksklusif"><i class="fa fa-plus"></i></button></a>
+{{--<a href="/properti/tambah"><button type="button" class="btn btn-success" data-toggle="tooltip" title="Tambah Properti Eksklusif"><i class="fa fa-plus"></i></button></a>--}}
 <a href="/properti"><button type="button" class="btn btn-primary" data-toggle="tooltip" title="Kembali"><i class="fa fa-arrow-left" aria-hidden="true"></i></button></a>
 <form class="d-md-inline-block" style="float: right;" method="GET" action="/properti/search">
                 <div class="input-group">
@@ -43,7 +43,7 @@ Properti Aktif
         <th>Kontak</th>
         <th>Aksi</th>
     </tr>
-    <?php   $count = 0; 
+    <?php   $count = 0;
                 foreach ($result as $properti) : ?>
     <tr>
         <td><?= $count = $count + 1 ?></td>
@@ -53,27 +53,27 @@ Properti Aktif
         <td><a href="{{$properti->alamat_gmap}}" style="text-decoration: none;"><i class="fas fa-map-marker-alt"></i> &nbsp;Lihat</a></td>
         <td><?php if (!isset($properti->pengguna->name)) {
             echo "Pengguna dihapus";
-        } else { 
+        } else {
             echo $properti->pengguna->name;
         } ?></td>
-        <td><?php 
+        <td><?php
             echo "Rp " . number_format($properti->harga,2,',','.');
         ?></td>
-        <td><?php 
+        <td><?php
             if ($properti->tayang !== 0) {
                 echo "Tayang";
             } else {
                 echo "Belum tayang";
             }
         ?></td>
-        <td><?php 
+        <td><?php
         if ($properti->exp == null) {
             "";
         } else {
             echo date('d F Y', strtotime($properti->exp));
         }
     ?></td>
-        <td><?php 
+        <td><?php
      $date = date('Y-m-d H:i:s', strtotime('+1 months'));
      $date2 = date('Y-m-d H:i:s', strtotime('+3 months'));
      $date3 = date('Y-m-d H:i:s', strtotime('+6 months'));
@@ -85,7 +85,7 @@ Properti Aktif
             echo "3 Bulan";
         } else if ($properti->exp <= $date3)  {
             echo "6 Bulan";
-        } 
+        }
     ?></td>
         <td><a href="tel:{{$properti->kontak}}"><button type="button" class="btn btn-secondary"><i class="fa fa-phone-alt"></i></button></a>
         <a href="https://wa.me/{{$properti->whatsapp}}"><button type="button" class="btn btn-success"><i class="fab fa-whatsapp"></i></button></a>

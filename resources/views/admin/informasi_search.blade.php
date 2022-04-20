@@ -33,7 +33,6 @@ Informasi
         <th>No</th>
         <th>Foto Informasi</th>
         <th>Judul</th>
-        <th>Isi</th>
         <th>Aksi</th>
     </tr>
     <?php   $count = 0;

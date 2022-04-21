@@ -68,7 +68,7 @@
     <script>
         let timeout;
 
-        let password = document.getElementById('PassEntry')
+        let password = document.getElementById('password')
         let strengthBadge = document.getElementById('StrengthDisp')
 
         let strongPassword = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})')

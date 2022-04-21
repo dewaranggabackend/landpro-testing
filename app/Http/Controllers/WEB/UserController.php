@@ -12,7 +12,7 @@ use App\Models\User;
 use App\Models\voucher_usage;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-use phpseclib3\Crypt\Hash;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {

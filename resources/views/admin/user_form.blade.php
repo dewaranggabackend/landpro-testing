@@ -33,8 +33,10 @@
                             <input class="form-control" id="email" name="email" type="email" required>
                         </div>
                     </div>
-                    <br/>
-                    <div class="col-md-5" style="float: right;">
+                    <div class="col-md-2">
+
+                    </div>
+                    <div class="col-md-5">
                         <div id="WhatsApp" class="mb-3">
                             <label class="form-label" for="whatsapp">No. WhatsApp</label>
                             <input class="form-control" id="whatsapp" name="whatsapp" type="number" required>

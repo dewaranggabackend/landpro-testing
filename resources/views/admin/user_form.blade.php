@@ -26,13 +26,19 @@
                     <label class="form-label" for="nama">Nama</label>
                     <input class="form-control" id="nama" name="nama" type="text" required>
                 </div>
-                <div id="Email" class="mb-3">
-                    <label class="form-label" for="email">E-mail</label>
-                    <input class="form-control" id="email" name="email" type="email" required>
-                </div>
-                <div id="WhatsApp" class="mb-3">
-                    <label class="form-label" for="whatsapp">No. WhatsApp</label>
-                    <input class="form-control" id="whatsapp" name="whatsapp" type="number" required>
+                <div class="col-lg-12">
+                    <div class="col-lg-6">
+                        <div id="Email" class="mb-3">
+                            <label class="form-label" for="email">E-mail</label>
+                            <input class="form-control" id="email" name="email" type="email" required>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div id="WhatsApp" class="mb-3">
+                            <label class="form-label" for="whatsapp">No. WhatsApp</label>
+                            <input class="form-control" id="whatsapp" name="whatsapp" type="number" required>
+                        </div>
+                    </div>
                 </div>
                 <div id="Password" class="mb-3">
                     <label class="form-label" for="password">Password</label>

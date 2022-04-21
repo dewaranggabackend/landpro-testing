@@ -40,7 +40,7 @@
                         <div id="WhatsApp" class="mb-3">
                             <label class="form-label" for="whatsapp">No. WhatsApp</label>
                             <input class="form-control" id="whatsapp" maxlength="13" name="whatsapp" type="number" required>
-                            <p>* gunakan format 62</p>
+                            <strong>* Gunakan format 62</strong>
                         </div>
                     </div>
                 </div>

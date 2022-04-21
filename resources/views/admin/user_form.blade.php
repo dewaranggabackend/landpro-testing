@@ -26,7 +26,7 @@
                     <label class="form-label" for="nama">Nama</label>
                     <input class="form-control" id="nama" name="nama" type="text" required>
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-12" style="display: flex;">
                     <div class="col-md-6">
                         <div id="Email" class="mb-3">
                             <label class="form-label" for="email">E-mail</label>

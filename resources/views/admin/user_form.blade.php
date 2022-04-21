@@ -34,7 +34,7 @@
                         </div>
                     </div>
                     <br/>
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                         <div id="WhatsApp" class="mb-3">
                             <label class="form-label" for="whatsapp">No. WhatsApp</label>
                             <input class="form-control" id="whatsapp" name="whatsapp" type="number" required>

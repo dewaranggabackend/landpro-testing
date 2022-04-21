@@ -39,13 +39,14 @@
                     <div class="col-md-5">
                         <div id="WhatsApp" class="mb-3">
                             <label class="form-label" for="whatsapp">No. WhatsApp</label>
-                            <input class="form-control" id="whatsapp" name="whatsapp" type="number" required>
+                            <input class="form-control" id="whatsapp" maxlength="13" name="whatsapp" type="number" required>
+                            <p>* gunakan format 62</p>
                         </div>
                     </div>
                 </div>
                 <div id="Password" class="mb-3">
                     <label class="form-label" for="password">Password</label>
-                    <input class="form-control" id="password" name="password" type="password" required>
+                    <input class="form-control" id="password" min="8" name="password" type="password" required>
                 </div>
                 <div id="submit" class="mb-3">
                     <button class="btn btn-success" type="submit"><i class="fas fa-plus"></i></button>

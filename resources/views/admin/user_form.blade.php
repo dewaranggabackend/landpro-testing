@@ -33,6 +33,7 @@
                             <input class="form-control" id="email" name="email" type="email" required>
                         </div>
                     </div>
+                    <br/>
                     <div class="col-md-6">
                         <div id="WhatsApp" class="mb-3">
                             <label class="form-label" for="whatsapp">No. WhatsApp</label>

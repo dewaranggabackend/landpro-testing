@@ -22,19 +22,19 @@
     <div class="card mb-4">
         <div class="card-body">
             <form action="/users/customer-service/create" method="POST">
-                <div id="Nama">
+                <div id="Nama" class="mb-3">
                     <label class="form-label" for="nama">Nama</label>
                     <input class="form-control" id="nama" name="nama" type="text" required>
                 </div>
-                <div id="Email">
+                <div id="Email" class="mb-3">
                     <label class="form-label" for="email">E-mail</label>
                     <input class="form-control" id="email" name="email" type="email" required>
                 </div>
-                <div id="WhatsApp">
+                <div id="WhatsApp" class="mb-3">
                     <label class="form-label" for="whatsapp">No. WhatsApp</label>
                     <input class="form-control" id="whatsapp" name="whatsapp" type="number" required>
                 </div>
-                <div id="Password">
+                <div id="Password" class="mb-3">
                     <label class="form-label" for="password">Password</label>
                     <input class="form-control" id="password" name="password" type="password" required>
                 </div>

@@ -66,7 +66,17 @@ Pengguna Terdaftar
                     <a href="/users/{{$pengguna->id}}/ban" onclick="return confirm('Apakah kamu yakin?')"><button type="button" class="btn btn-danger" data-toggle="tooltip" title="Banned"><i class="fa fa-times"></i></button></a>
         <a href="/users/{{$pengguna->id}}/upgrade" onclick="return confirm('Apakah kamu yakin?')"><button type="button" class="btn btn-success" data-toggle="tooltip" title="Upgrade"><i class="fa fa-chevron-up"></i></button></a>
         </td>
-        <?php }} ?>
+        <?php }} else {
+            if ($pengguna->id != \Illuminate\Support\Facades\Auth::user()->id) {
+            ?>
+            <a href="users/customer-service/del/{{$pengguna->id}}">
+                <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
+            </a>
+        <?php
+        } else {
+                echo "<i>logged in<i>";
+        }
+        } ?>
         <?php endforeach; ?>
                 </tr>
 </table>

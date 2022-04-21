@@ -27,7 +27,7 @@ Pengguna Terdaftar
 <div class="card mb-4">
 <div class="card-body">
 <a href="/users"><button type="button" class="btn btn-primary" data-toggle="tooltip" title="Refresh"><i class="fa fa-sync" aria-hidden="true"></i></button></a>
-    <a href="/users/customer-service/create"><button class="btn btn-success" data-toggle="tooltip" title="Tambah Customer Service">+</button></a>
+    <a href="/users/customer-service/create"><button class="btn btn-success" data-toggle="tooltip" title="Tambah Customer Service"><i class="fas fa-plus"></i></button></a>
 <a href="/users/export"><button class="btn btn-success" data-toggle="tooltip" title="Ekspor ke Excel"><i class="fas fa-file-excel"></i></button></a>
 <form class="d-md-inline-block" style="float: right;" method="GET" action="/users/search">
                 <div class="input-group">

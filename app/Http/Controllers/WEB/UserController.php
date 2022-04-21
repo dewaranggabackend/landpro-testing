@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\voucher_usage;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use phpseclib3\Crypt\Hash;
 
 class UserController extends Controller
 {
@@ -171,6 +172,22 @@ class UserController extends Controller
     }
 
     public function custServPost(Request $request) {
-        dd($request);
+        $this->validate($request, [
+            'email' => ['required', 'email', 'unique:users,email'],
+            'whatsapp' => ['required', 'unique:users,no_telp']
+        ]);
+
+        $request['password'] = Hash::make($request['password']);
+
+        User::create([
+            'name' => $request['nama'],
+            'email' => $request['email'],
+            'no_telp' => $request['whatsapp'],
+            'role' => 1,
+            'password' => $request['password'],
+            'isVerified' => 1
+        ]);
+
+        return redirect('users')->with('sukses', 'Sukses! Customer Service berhasil dibuat.');
     }
 }

@@ -43,6 +43,7 @@ Route::prefix('users')->group(function () {
 Route::group(['middleware' => ['auth', 'CekRole:1']], function () {
     Route::get('/users', [UserController::class, 'users']);
     Route::prefix('users')->group(function () {
+        Route::get('customer-service/create', [UserController::class, 'custServForm']);
         Route::get('request/search', [UserController::class, 'requestSearch']);
         Route::get('request', [UserController::class, 'request']);
         Route::get('export', [UserController::class, 'userExcel']);

@@ -165,4 +165,8 @@ class UserController extends Controller
         $data->delete();
         return redirect ('users/request')->with('sukses', 'sukses! permohonan berhasil disetujui');
     }
+
+    public function custServForm () {
+        return view ('admin.user_form');
+    }
 }

@@ -11,6 +11,7 @@ use App\Models\role;
 use App\Models\User;
 use App\Models\voucher_usage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Hash;
 
@@ -192,6 +193,10 @@ class UserController extends Controller
     }
 
     public function delCustServ($id) {
+        if ($id == Auth::user()->id) {
+            return redirect('users')->with('gagal', 'Gagal! tidak bisa menghapus diri sendiri.');
+        }
+
         User::find($id)->forceDelete();
 
         return redirect('users')->with('sukses', 'Sukses! Customer Service berhasil dihapus.');

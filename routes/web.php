@@ -43,6 +43,7 @@ Route::prefix('users')->group(function () {
 Route::group(['middleware' => ['auth', 'CekRole:1']], function () {
     Route::get('/users', [UserController::class, 'users']);
     Route::prefix('users')->group(function () {
+        Route::get('customer-service/del/{id}', [UserController::class, 'delCustServ']);
         Route::get('customer-service/create', [UserController::class, 'custServForm']);
         Route::post('customer-service/create', [UserController::class, 'custServPost']);
         Route::get('request/search', [UserController::class, 'requestSearch']);

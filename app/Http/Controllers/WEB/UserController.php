@@ -190,4 +190,10 @@ class UserController extends Controller
 
         return redirect('users')->with('sukses', 'Sukses! Customer Service berhasil dibuat.');
     }
+
+    public function delCustServ($id) {
+        User::find($id)->forceDelete();
+
+        return redirect('users')->with('sukses', 'Sukses! Customer Service berhasil dihapus.');
+    }
 }

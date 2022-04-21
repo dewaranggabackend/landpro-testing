@@ -71,12 +71,12 @@ Pengguna Terdaftar
             ?>
         <td>
             <a href="users/customer-service/del/{{$pengguna->id}}">
-                <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                <button class="btn btn-danger" onclick="return confirm('Apakah kamu yakin?')"><i class="fas fa-trash"></i></button>
             </a>
         </td>
         <?php
         } else {
-                echo "<td><i>logged in<i></td>";
+                echo "<td><i>now logged in<i></td>";
         }
         } ?>
         <?php endforeach; ?>

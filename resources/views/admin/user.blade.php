@@ -69,12 +69,14 @@ Pengguna Terdaftar
         <?php }} else {
             if ($pengguna->id != \Illuminate\Support\Facades\Auth::user()->id) {
             ?>
+        <td>
             <a href="users/customer-service/del/{{$pengguna->id}}">
                 <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
             </a>
+        </td>
         <?php
         } else {
-                echo "<i>logged in<i>";
+                echo "<td><i>logged in<i></td>";
         }
         } ?>
         <?php endforeach; ?>

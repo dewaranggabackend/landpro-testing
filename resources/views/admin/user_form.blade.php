@@ -28,13 +28,13 @@
                 </div>
                 <div class="col-lg-12">
                     <div class="col-lg-6">
-                        <div id="Email" class="mb-3">
+                        <div id="Email">
                             <label class="form-label" for="email">E-mail</label>
                             <input class="form-control" id="email" name="email" type="email" required>
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <div id="WhatsApp" class="mb-3">
+                        <div id="WhatsApp">
                             <label class="form-label" for="whatsapp">No. WhatsApp</label>
                             <input class="form-control" id="whatsapp" name="whatsapp" type="number" required>
                         </div>

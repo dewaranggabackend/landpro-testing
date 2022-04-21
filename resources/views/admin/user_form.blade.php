@@ -47,6 +47,9 @@
                     <label class="form-label" for="password">Password</label>
                     <input class="form-control" id="password" name="password" type="password" required>
                 </div>
+                <div id="submit" class="mb-3">
+                    <button class="btn btn-success" type="submit"><i class="fas fa-plus"></i></button>
+                </div>
             </form>
         </div>
     </div>

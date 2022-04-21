@@ -169,4 +169,8 @@ class UserController extends Controller
     public function custServForm () {
         return view ('admin.user_form');
     }
+
+    public function custServPost(Request $request) {
+        dd($request);
+    }
 }

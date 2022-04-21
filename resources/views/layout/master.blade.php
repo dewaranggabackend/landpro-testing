@@ -11310,7 +11310,13 @@
             position: absolute;
             z-index: 99;
             }
-            
+
+            .displayBadge{
+                margin-top: 5%;
+                display: none;
+                text-align :center;
+            }
+
         </style>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
         <title>@yield('judul')</title>
@@ -11326,7 +11332,7 @@
                 <a href="#"><i class="fab fa-youtube oranye"></i></a>
                 <a href="https://www.twitter.com/landproperti/"><i class="fab fa-twitter oranye"></i></a>
                 <a href="https://www.instagram.com/landproperti/"><i class="fab fa-instagram oranye"></i></a>
-             
+
         </div>
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
@@ -11383,7 +11389,7 @@
                                     <a class="nav-link" href="/users/request"> Request </a>
                                     <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                            
+
                                         </nav>
                                     </div>
                                 </nav>
@@ -11413,7 +11419,7 @@
                             <a class="nav-link" href="/faq">
                             <i class="fa fa-question-circle"></i> &nbsp;    FAQ
                             </a>
-                            
+
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
@@ -11464,8 +11470,45 @@
         </script>
         <script>
         $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip();   
+        $('[data-toggle="tooltip"]').tooltip();
         });
         </script>
+    <script>
+        let timeout;
+
+        let password = document.getElementById('PassEntry')
+        let strengthBadge = document.getElementById('StrengthDisp')
+
+        let strongPassword = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})')
+        let mediumPassword = new RegExp('((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,}))|((?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])(?=.{8,}))')
+
+        function StrengthChecker(PasswordParameter){
+
+            if(strongPassword.test(PasswordParameter)) {
+                strengthBadge.style.backgroundColor = "green"
+                strengthBadge.textContent = 'Strong'
+            } else if(mediumPassword.test(PasswordParameter)){
+                strengthBadge.style.backgroundColor = 'blue'
+                strengthBadge.textContent = 'Medium'
+            } else{
+                strengthBadge.style.backgroundColor = 'red'
+                strengthBadge.textContent = 'Weak'
+            }
+        }
+
+        password.addEventListener("input", () => {
+
+            strengthBadge.style.display= 'block'
+            clearTimeout(timeout);
+
+            timeout = setTimeout(() => StrengthChecker(password.value), 500);
+
+            if(password.value.length !== 0){
+                strengthBadge.style.display != 'block'
+            } else{
+                strengthBadge.style.display = 'none'
+            }
+        });
+    </script>
     </body>
 </html>

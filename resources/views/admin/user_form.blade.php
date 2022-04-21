@@ -32,6 +32,9 @@
                         <div id="Email" class="mb-3">
                             <label class="form-label" for="email">E-mail</label>
                             <input class="form-control" id="email" name="email" type="email" required>
+                            @if($errors->has('email'))
+                                <div class="error">{{ $errors->first('email') }}</div>
+                            @endif
                         </div>
                     </div>
                     <div class="col-md-1">
@@ -42,6 +45,9 @@
                             <label class="form-label" for="whatsapp">No. WhatsApp</label>
                             <input class="form-control" id="whatsapp" maxlength="13" name="whatsapp" type="number" required>
                             <strong>* Gunakan format 62</strong>
+                            @if($errors->has('whatsapp'))
+                                <div class="error">{{ $errors->first('whatsapp') }}</div>
+                            @endif
                         </div>
                     </div>
                 </div>

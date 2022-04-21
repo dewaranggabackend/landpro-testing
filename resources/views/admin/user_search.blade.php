@@ -16,7 +16,8 @@ Pengguna Terdaftar
 <div class="card mb-4">
 <div class="card-body">
 <a href="/users"><button type="button" class="btn btn-primary" data-toggle="tooltip" title="Kembali"><i class="fa fa-arrow-left" aria-hidden="true"></i></button></a>
-<form class="d-md-inline-block" style="float: right;" method="GET" action="/users/search">
+    <a href="/users/customer-service/create"><button class="btn btn-success" data-toggle="tooltip" title="Tambah Customer Service"><i class="fas fa-plus"></i></button></a>
+    <form class="d-md-inline-block" style="float: right;" method="GET" action="/users/search">
                 <div class="input-group">
                     <input class="form-control" type="text" placeholder="Cari pengguna..." name="cari" aria-describedby="btnNavbarSearch" />
                     <button class="btn btn-secondary" id="btnNavbarSearch" type="submit"><i class="fas fa-search"></i></button>
@@ -52,7 +53,7 @@ Pengguna Terdaftar
                     <td>
                     <a href="/users/{{$pengguna->id}}/ban" onclick="return confirm('Apakah kamu yakin?')"><button type="button" class="btn btn-danger" data-toggle="tooltip" title="Banned"><i class="fa fa-times"></i></button></a>
         <a href="/users/{{$pengguna->id}}/upgrade" onclick="return confirm('Apakah kamu yakin?')"><button type="button" class="btn btn-success" data-toggle="tooltip" title="Upgrade"><i class="fa fa-chevron-up"></i></button></a>
-        </td>            
+        </td>
         <?php }} ?>
         <?php endforeach; ?>
                 </tr>

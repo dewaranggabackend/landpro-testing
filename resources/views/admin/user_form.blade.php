@@ -33,7 +33,7 @@
                             <label class="form-label" for="email">E-mail</label>
                             <input class="form-control" id="email" name="email" type="email" required>
                             @if($errors->has('email'))
-                                <div class="error">{{ $errors->first('email') }}</div>
+                                <div class="error" style="color: red;">{{ $errors->first('email') }}</div>
                             @endif
                         </div>
                     </div>

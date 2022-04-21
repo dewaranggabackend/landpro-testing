@@ -53,7 +53,7 @@
                 </div>
                 <div id="Password" class="mb-3">
                     <label class="form-label" for="password">Password</label>
-                    <input class="form-control" id="password" min="8" name="password" type="password" required>
+                    <input class="form-control" id="password" minlength="8" name="password" type="password" required>
                     <br/>
                     <span id="StrengthDisp" class="badge displayBadge">Weak</span>
                 </div>

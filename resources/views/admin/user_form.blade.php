@@ -27,14 +27,14 @@
                     <input class="form-control" id="nama" name="nama" type="text" required>
                 </div>
                 <div class="col-lg-12">
-                    <div class="col-lg-6">
-                        <div id="Email">
+                    <div class="col-md-6">
+                        <div id="Email" class="mb-3">
                             <label class="form-label" for="email">E-mail</label>
                             <input class="form-control" id="email" name="email" type="email" required>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <div id="WhatsApp">
+                    <div class="col-md-6">
+                        <div id="WhatsApp" class="mb-3">
                             <label class="form-label" for="whatsapp">No. WhatsApp</label>
                             <input class="form-control" id="whatsapp" name="whatsapp" type="number" required>
                         </div>

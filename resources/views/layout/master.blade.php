@@ -11312,7 +11312,6 @@
             }
 
             .displayBadge {
-                margin-top: 5%;
                 display: none;
                 text-align :center;
             }

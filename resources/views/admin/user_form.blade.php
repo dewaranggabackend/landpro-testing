@@ -46,7 +46,7 @@
                             <input class="form-control" id="whatsapp" maxlength="13" name="whatsapp" type="number" required>
                             <strong>* Gunakan format 62</strong>
                             @if($errors->has('whatsapp'))
-                                <div class="error">{{ $errors->first('whatsapp') }}</div>
+                                <div class="error" style="color: red;">{{ $errors->first('whatsapp') }}</div>
                             @endif
                         </div>
                     </div>

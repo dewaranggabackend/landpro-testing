@@ -22,6 +22,7 @@
     <div class="card mb-4">
         <div class="card-body">
             <form action="/users/customer-service/create" method="POST">
+                {{csrf_field()}}
                 <div id="Nama" class="mb-3">
                     <label class="form-label" for="nama">Nama</label>
                     <input class="form-control" id="nama" name="nama" type="text" required>

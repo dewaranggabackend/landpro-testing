@@ -54,6 +54,7 @@
                 <div id="Password" class="mb-3">
                     <label class="form-label" for="password">Password</label>
                     <input class="form-control" id="password" min="8" name="password" type="password" required>
+                    <br/>
                     <span id="StrengthDisp" class="badge displayBadge">Weak</span>
                 </div>
                 <div id="submit" class="mb-3">

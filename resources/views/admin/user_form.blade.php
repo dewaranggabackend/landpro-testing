@@ -23,8 +23,20 @@
         <div class="card-body">
             <form action="/users/customer-service/create" method="POST">
                 <div id="Nama">
-                    <label for="nama">Nama</label>
-                    <input id="nama" type="text" required>
+                    <label class="form-label" for="nama">Nama</label>
+                    <input class="form-control" id="nama" name="nama" type="text" required>
+                </div>
+                <div id="Email">
+                    <label class="form-label" for="email">E-mail</label>
+                    <input class="form-control" id="email" name="email" type="email" required>
+                </div>
+                <div id="WhatsApp">
+                    <label class="form-label" for="whatsapp">No. WhatsApp</label>
+                    <input class="form-control" id="whatsapp" name="whatsapp" type="number" required>
+                </div>
+                <div id="Password">
+                    <label class="form-label" for="password">Password</label>
+                    <input class="form-control" id="password" name="password" type="password" required>
                 </div>
             </form>
         </div>

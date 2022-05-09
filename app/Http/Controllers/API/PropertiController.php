@@ -7,6 +7,7 @@ use App\Models\favorite;
 use App\Models\properti;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Validator;
 
 class PropertiController extends Controller
 {

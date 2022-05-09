@@ -14,12 +14,10 @@ Pengguna Terdaftar
 
 @section('body')
 <?php if(Session::has('sukses')) { ?>
-
 <div class="alert alert-success" role="alert">
     {{Session('sukses')}}
 </div>
 <?php } else if (Session::has('gagal')) { ?>
-
 <div class="alert alert-danger" role="alert">
     {{Session('gagal')}}
 </div>
